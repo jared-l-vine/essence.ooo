@@ -1,0 +1,9 @@
+mutation createListing($createlistinginput: CreateListingInput!) {
+  createListing(input: $createlistinginput) {
+    id
+    title
+    description
+    created_at
+    updated_at
+  }
+}

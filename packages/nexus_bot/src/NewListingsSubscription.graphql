@@ -1,0 +1,13 @@
+subscription NewListingsSubscription {
+  newListings {
+    id
+    title
+    description
+    owner {
+      id
+      username
+      discriminator
+      avatar
+    }
+  }
+}

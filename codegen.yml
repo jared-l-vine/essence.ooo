@@ -1,9 +1,9 @@
 overwrite: true
 schema:
-  - ${SCHEMA_URL}:
+  - ${APPSYNC_GRAPHQL_ENDPOINT}:
       headers:
-        x-api-key: ${API_KEY} 
-# documents: "packages/**/*.graphql"
+        x-api-key: ${APPSYNC_API_KEY} 
+documents: "packages/**/*.graphql"
 config:
   reactApolloVersion: 3
   # scalars:
@@ -24,7 +24,7 @@ generates:
   .:
     preset: near-operation-file
     presetConfig:
-      extension: .generated.tsx
+      extension: .generated.ts
       baseTypesPath: packages/nexus_frontend/graphql/types.generated.d
     plugins:
       - "typescript-operations"

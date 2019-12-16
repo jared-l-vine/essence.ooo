@@ -1,6 +1,23 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "publish": "lerna publish",
+    "version": "lerna version",
+    "bootstrap": "lerna bootstrap",
+    "list": "lerna list",
+    "changed": "lerna changed",
+    "diff": "lerna diff",
+    "exec": "lerna exec",
+    "run": "lerna run",
+    "init": "lerna init",
+    "add": "lerna add",
+    "clean": "lerna clean",
+    "import": "lerna import",
+    "link": "lerna link",
+    "create": "lerna create",
+    "info": "lerna info"
+  },
   "devDependencies": {
     "lerna": "^3.19.0"
   }

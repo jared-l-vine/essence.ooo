@@ -22,6 +22,7 @@ resource "aws_iam_role_policy" "nexus_appsync_role_policy" {
   name = "nexus_appsync_role_policy"
   role = "${aws_iam_role.nexus_appsync_role.id}"
 
+  # TODO: Figure out if there's a way to gather resources automatically
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -32,7 +33,8 @@ resource "aws_iam_role_policy" "nexus_appsync_role_policy" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_dynamodb_table.nexus_appsync_role.arn}"
+        "${aws_dynamodb_table.listings.arn}",
+        "${aws_dynamodb_table.users.arn}"
       ]
     }
   ]

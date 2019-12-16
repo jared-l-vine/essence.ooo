@@ -6,6 +6,9 @@ import {
   ApolloProvider
 } from "@apollo/client";
 import CreateListingPage from "./pages/listing/create";
+import OauthRedirectPage from "./pages/oauth/redirect";
+import LoginOrganism from "./organisms/login";
+import { AuthContextProvider } from "./services/auth";
 
 ["REACT_APP_APPSYNC_GRAPHQL_ENDPOINT", "REACT_APP_APPSYNC_API_KEY"].map(
   variableName => {
@@ -26,9 +29,13 @@ const client = new ApolloClient({
 
 const LazyApp: FunctionComponent = () => {
   return (
-    <ApolloProvider client={client}>
-      <CreateListingPage />
-    </ApolloProvider>
+    <AuthContextProvider>
+      <ApolloProvider client={client}>
+        <LoginOrganism />
+        <CreateListingPage />
+        <OauthRedirectPage />
+      </ApolloProvider>
+    </AuthContextProvider>
   );
 };
 

@@ -1,0 +1,15 @@
+mutation CreateUser(
+  $id: String!
+  $username: String!
+  $discriminator: String!
+  $avatar: String
+) {
+  createUser(
+    id: $id
+    username: $username
+    discriminator: $discriminator
+    avatar: $avatar
+  ) {
+    id
+  }
+}

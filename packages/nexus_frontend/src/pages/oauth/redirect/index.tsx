@@ -10,14 +10,16 @@ import { useCreateUserMutation } from "./CreateUser.generated";
 import { useApolloClient } from "@apollo/client";
 
 const OauthRedirectPage: FunctionComponent = () => {
-  const { user, setUser } = useAuthContext();
+  const { setUser } = useAuthContext();
   const apolloClient = useApolloClient();
   const [createUser] = useCreateUserMutation();
   // TODO: save cookie w token details
   useEffect(() => {
     async function discordLookup() {
-      const token_type = "Bearer";
-      const access_token = "FkeigJyyu2NIQiWUaquIMJKplIOjPD";
+      const { token_type, access_token } = {} as any;
+
+      if (!token_type || !access_token)
+        throw new Error("Invalid OAuth Redirect");
 
       const user: User = await fetch(
         "https://discordapp.com/api/v6/users/@me",

@@ -1,33 +1,41 @@
+type Listing {
+  id: ID!
+  title: String!
+  description: String
+  created_at: AWSTimestamp!
+  last_posted: AWSTimestamp
+  owner: User!
+}
+
+type Mutation {
+  createListing(title: String!, description: String, owner_id: ID!): Listing
+  createUser(
+    id: ID!
+    username: String!
+    discriminator: String!
+    avatar: String
+  ): User
+}
+
+type Query {
+  listing(id: ID!): Listing
+  allListings: [Listing]
+  user(id: String!): User
+}
+
+type Subscription {
+  newListings: Listing @aws_subscribe(mutations: ["createListing"])
+}
+
+type User {
+  id: String!
+  username: String!
+  discriminator: String!
+  avatar: String
+}
+
 schema {
   query: Query
   mutation: Mutation
   subscription: Subscription
-}
-
-type Query {
-    listing(id: ID!): Listing
-    allListings: [Listing]
-    user(id: ID!): User
-}
-
-type Mutation {
-    createListing(title: String!, description: String, owner_id: String!): Listing
-    createUser(): User
-}
-
-type Subscription {
-    newListings: Listing @aws_subscribe(mutations: ["createListing"])
-}
-
-type Listing {
-    id: ID!
-    title: String!
-    description: String
-    created_at: AWSTimestamp!
-    last_posted: AWSTimestamp
-    owner: User
-}
-
-type User {
-    id: ID!
 }

@@ -1,8 +1,8 @@
 overwrite: true
 schema:
-  - ${APPSYNC_GRAPHQL_ENDPOINT}:
+  - ${REACT_APP_APPSYNC_GRAPHQL_ENDPOINT}:
       headers:
-        x-api-key: ${APPSYNC_API_KEY} 
+        x-api-key: ${REACT_APP_APPSYNC_API_KEY} 
 documents: "packages/**/*.graphql"
 config:
   reactApolloVersion: 3

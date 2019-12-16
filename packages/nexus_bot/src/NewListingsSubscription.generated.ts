@@ -17,3 +17,21 @@ export type NewListingsSubscriptionSubscription = {
       }
   >;
 };
+
+import gql from "graphql-tag";
+
+export const NewListingsSubscription = gql`
+  subscription NewListingsSubscription {
+    newListings {
+      id
+      title
+      description
+      owner {
+        id
+        username
+        discriminator
+        avatar
+      }
+    }
+  }
+`;

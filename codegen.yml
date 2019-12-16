@@ -2,7 +2,7 @@ overwrite: true
 schema:
   - ${REACT_APP_APPSYNC_GRAPHQL_ENDPOINT}:
       headers:
-        x-api-key: ${REACT_APP_APPSYNC_API_KEY} 
+        x-api-key: ${REACT_APP_APPSYNC_API_KEY}
 config:
   reactApolloVersion: 3
   # scalars:
@@ -53,6 +53,15 @@ generates:
       baseTypesPath: /graphql/types.generated.d
     plugins:
       - "typescript-operations"
+      - "typescript-document-nodes"
+  packages/nexus_bot/:
+    documents: "packages/nexus_bot/**/*.graphql"
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.d.ts
+      baseTypesPath: /graphql/types.generated.d
+    plugins:
+      - "typescript-graphql-files-modules"
 hooks:
   afterAllFileWrite:
     # - eslint --fix

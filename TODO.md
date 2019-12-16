@@ -1,0 +1,1 @@
+- [ ] AppSync - only allow requests from essence.ooo

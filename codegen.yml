@@ -1,0 +1,39 @@
+overwrite: true
+schema:
+  - ${SCHEMA_URL}:
+      headers:
+        x-api-key: ${API_KEY} 
+# documents: "packages/**/*.graphql"
+config:
+  reactApolloVersion: 3
+  # scalars:
+  #   timestamptz: string
+  #   numeric: number
+  #   uuid: string
+generates:
+  packages/nexus_frontend/graphql/types.generated.d.ts:
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
+  packages/nexus_frontend/graphql/fragments.generated.ts:
+    plugins:
+      - "fragment-matcher"
+  packages/nexus_frontend/graphql/schema.generated.json:
+    plugins:
+      - "introspection"
+  .:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: packages/nexus_frontend/graphql/types.generated.d
+    plugins:
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withComponent: false
+      withHOC: false
+      withHooks: true
+hooks:
+  afterAllFileWrite:
+    # - eslint --fix
+    - prettier --write

@@ -28,167 +28,61 @@ export type Scalars = {
   AWSTimestamp: any;
 };
 
-export type CreateListingInput = {
-  title: Scalars["String"];
-  description?: Maybe<Scalars["String"]>;
-  created_at: Scalars["AWSTimestamp"];
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
-};
-
-export type DeleteListingInput = {
-  id: Scalars["ID"];
-};
-
 export type Listing = {
   __typename?: "Listing";
   id: Scalars["ID"];
   title: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   created_at: Scalars["AWSTimestamp"];
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
-};
-
-export type ListingConnection = {
-  __typename?: "ListingConnection";
-  items?: Maybe<Array<Maybe<Listing>>>;
-  nextToken?: Maybe<Scalars["String"]>;
+  last_posted?: Maybe<Scalars["AWSTimestamp"]>;
+  owner: User;
 };
 
 export type Mutation = {
   __typename?: "Mutation";
   createListing?: Maybe<Listing>;
-  updateListing?: Maybe<Listing>;
-  deleteListing?: Maybe<Listing>;
+  createUser?: Maybe<User>;
 };
 
 export type MutationCreateListingArgs = {
-  input: CreateListingInput;
+  title: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  owner_id: Scalars["ID"];
 };
 
-export type MutationUpdateListingArgs = {
-  input: UpdateListingInput;
-};
-
-export type MutationDeleteListingArgs = {
-  input: DeleteListingInput;
+export type MutationCreateUserArgs = {
+  id: Scalars["ID"];
+  username: Scalars["String"];
+  discriminator: Scalars["String"];
+  avatar?: Maybe<Scalars["String"]>;
 };
 
 export type Query = {
   __typename?: "Query";
-  getListing?: Maybe<Listing>;
-  listListings?: Maybe<ListingConnection>;
+  listing?: Maybe<Listing>;
+  allListings?: Maybe<Array<Maybe<Listing>>>;
+  user?: Maybe<User>;
 };
 
-export type QueryGetListingArgs = {
+export type QueryListingArgs = {
   id: Scalars["ID"];
 };
 
-export type QueryListListingsArgs = {
-  filter?: Maybe<TableListingFilterInput>;
-  limit?: Maybe<Scalars["Int"]>;
-  nextToken?: Maybe<Scalars["String"]>;
+export type QueryUserArgs = {
+  id: Scalars["String"];
 };
 
 export type Subscription = {
   __typename?: "Subscription";
-  onCreateListing?: Maybe<Listing>;
-  onUpdateListing?: Maybe<Listing>;
-  onDeleteListing?: Maybe<Listing>;
+  newListings?: Maybe<Listing>;
 };
 
-export type SubscriptionOnCreateListingArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  title?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  created_at?: Maybe<Scalars["AWSTimestamp"]>;
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
-};
-
-export type SubscriptionOnUpdateListingArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  title?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  created_at?: Maybe<Scalars["AWSTimestamp"]>;
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
-};
-
-export type SubscriptionOnDeleteListingArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  title?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  created_at?: Maybe<Scalars["AWSTimestamp"]>;
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
-};
-
-export type TableBooleanFilterInput = {
-  ne?: Maybe<Scalars["Boolean"]>;
-  eq?: Maybe<Scalars["Boolean"]>;
-};
-
-export type TableFloatFilterInput = {
-  ne?: Maybe<Scalars["Float"]>;
-  eq?: Maybe<Scalars["Float"]>;
-  le?: Maybe<Scalars["Float"]>;
-  lt?: Maybe<Scalars["Float"]>;
-  ge?: Maybe<Scalars["Float"]>;
-  gt?: Maybe<Scalars["Float"]>;
-  contains?: Maybe<Scalars["Float"]>;
-  notContains?: Maybe<Scalars["Float"]>;
-  between?: Maybe<Array<Maybe<Scalars["Float"]>>>;
-};
-
-export type TableIdFilterInput = {
-  ne?: Maybe<Scalars["ID"]>;
-  eq?: Maybe<Scalars["ID"]>;
-  le?: Maybe<Scalars["ID"]>;
-  lt?: Maybe<Scalars["ID"]>;
-  ge?: Maybe<Scalars["ID"]>;
-  gt?: Maybe<Scalars["ID"]>;
-  contains?: Maybe<Scalars["ID"]>;
-  notContains?: Maybe<Scalars["ID"]>;
-  between?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  beginsWith?: Maybe<Scalars["ID"]>;
-};
-
-export type TableIntFilterInput = {
-  ne?: Maybe<Scalars["Int"]>;
-  eq?: Maybe<Scalars["Int"]>;
-  le?: Maybe<Scalars["Int"]>;
-  lt?: Maybe<Scalars["Int"]>;
-  ge?: Maybe<Scalars["Int"]>;
-  gt?: Maybe<Scalars["Int"]>;
-  contains?: Maybe<Scalars["Int"]>;
-  notContains?: Maybe<Scalars["Int"]>;
-  between?: Maybe<Array<Maybe<Scalars["Int"]>>>;
-};
-
-export type TableListingFilterInput = {
-  id?: Maybe<TableIdFilterInput>;
-  title?: Maybe<TableStringFilterInput>;
-  description?: Maybe<TableStringFilterInput>;
-  created_at?: Maybe<TableIntFilterInput>;
-  updated_at?: Maybe<TableIntFilterInput>;
-};
-
-export type TableStringFilterInput = {
-  ne?: Maybe<Scalars["String"]>;
-  eq?: Maybe<Scalars["String"]>;
-  le?: Maybe<Scalars["String"]>;
-  lt?: Maybe<Scalars["String"]>;
-  ge?: Maybe<Scalars["String"]>;
-  gt?: Maybe<Scalars["String"]>;
-  contains?: Maybe<Scalars["String"]>;
-  notContains?: Maybe<Scalars["String"]>;
-  between?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  beginsWith?: Maybe<Scalars["String"]>;
-};
-
-export type UpdateListingInput = {
-  id: Scalars["ID"];
-  title?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  created_at?: Maybe<Scalars["AWSTimestamp"]>;
-  updated_at?: Maybe<Scalars["AWSTimestamp"]>;
+export type User = {
+  __typename?: "User";
+  id: Scalars["String"];
+  username: Scalars["String"];
+  discriminator: Scalars["String"];
+  avatar?: Maybe<Scalars["String"]>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -299,21 +193,10 @@ export type ResolversTypes = {
   Listing: ResolverTypeWrapper<Listing>;
   String: ResolverTypeWrapper<Scalars["String"]>;
   AWSTimestamp: ResolverTypeWrapper<Scalars["AWSTimestamp"]>;
-  TableListingFilterInput: TableListingFilterInput;
-  TableIDFilterInput: TableIdFilterInput;
-  TableStringFilterInput: TableStringFilterInput;
-  TableIntFilterInput: TableIntFilterInput;
-  Int: ResolverTypeWrapper<Scalars["Int"]>;
-  ListingConnection: ResolverTypeWrapper<ListingConnection>;
+  User: ResolverTypeWrapper<User>;
   Mutation: ResolverTypeWrapper<{}>;
-  CreateListingInput: CreateListingInput;
-  UpdateListingInput: UpdateListingInput;
-  DeleteListingInput: DeleteListingInput;
   Subscription: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
-  TableBooleanFilterInput: TableBooleanFilterInput;
-  TableFloatFilterInput: TableFloatFilterInput;
-  Float: ResolverTypeWrapper<Scalars["Float"]>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -323,24 +206,41 @@ export type ResolversParentTypes = {
   Listing: Listing;
   String: Scalars["String"];
   AWSTimestamp: Scalars["AWSTimestamp"];
-  TableListingFilterInput: TableListingFilterInput;
-  TableIDFilterInput: TableIdFilterInput;
-  TableStringFilterInput: TableStringFilterInput;
-  TableIntFilterInput: TableIntFilterInput;
-  Int: Scalars["Int"];
-  ListingConnection: ListingConnection;
+  User: User;
   Mutation: {};
-  CreateListingInput: CreateListingInput;
-  UpdateListingInput: UpdateListingInput;
-  DeleteListingInput: DeleteListingInput;
   Subscription: {};
   Boolean: Scalars["Boolean"];
-  TableBooleanFilterInput: TableBooleanFilterInput;
-  TableFloatFilterInput: TableFloatFilterInput;
-  Float: Scalars["Float"];
 };
 
 export type DeferDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_SubscribeDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_OidcDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_IamDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_Api_KeyDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
@@ -354,34 +254,6 @@ export type Aws_AuthDirectiveResolver<
   Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_IamDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_OidcDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_PublishDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_Api_KeyDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
 export type Aws_Cognito_User_PoolsDirectiveResolver<
   Result,
   Parent,
@@ -389,11 +261,11 @@ export type Aws_Cognito_User_PoolsDirectiveResolver<
   Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_SubscribeDirectiveResolver<
+export type Aws_PublishDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
-  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface AwsTimestampScalarConfig
@@ -417,27 +289,12 @@ export type ListingResolvers<
     ParentType,
     ContextType
   >;
-  updated_at?: Resolver<
+  last_posted?: Resolver<
     Maybe<ResolversTypes["AWSTimestamp"]>,
     ParentType,
     ContextType
   >;
-};
-
-export type ListingConnectionResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["ListingConnection"] = ResolversParentTypes["ListingConnection"]
-> = {
-  items?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Listing"]>>>,
-    ParentType,
-    ContextType
-  >;
-  nextToken?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  owner?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
 };
 
 export type MutationResolvers<
@@ -448,19 +305,13 @@ export type MutationResolvers<
     Maybe<ResolversTypes["Listing"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationCreateListingArgs, "input">
+    RequireFields<MutationCreateListingArgs, "title" | "owner_id">
   >;
-  updateListing?: Resolver<
-    Maybe<ResolversTypes["Listing"]>,
+  createUser?: Resolver<
+    Maybe<ResolversTypes["User"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateListingArgs, "input">
-  >;
-  deleteListing?: Resolver<
-    Maybe<ResolversTypes["Listing"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationDeleteListingArgs, "input">
+    RequireFields<MutationCreateUserArgs, "id" | "username" | "discriminator">
   >;
 };
 
@@ -468,17 +319,22 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
-  getListing?: Resolver<
+  listing?: Resolver<
     Maybe<ResolversTypes["Listing"]>,
     ParentType,
     ContextType,
-    RequireFields<QueryGetListingArgs, "id">
+    RequireFields<QueryListingArgs, "id">
   >;
-  listListings?: Resolver<
-    Maybe<ResolversTypes["ListingConnection"]>,
+  allListings?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Listing"]>>>,
+    ParentType,
+    ContextType
+  >;
+  user?: Resolver<
+    Maybe<ResolversTypes["User"]>,
     ParentType,
     ContextType,
-    QueryListListingsArgs
+    RequireFields<QueryUserArgs, "id">
   >;
 };
 
@@ -486,36 +342,31 @@ export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Subscription"] = ResolversParentTypes["Subscription"]
 > = {
-  onCreateListing?: SubscriptionResolver<
+  newListings?: SubscriptionResolver<
     Maybe<ResolversTypes["Listing"]>,
-    "onCreateListing",
+    "newListings",
     ParentType,
-    ContextType,
-    SubscriptionOnCreateListingArgs
+    ContextType
   >;
-  onUpdateListing?: SubscriptionResolver<
-    Maybe<ResolversTypes["Listing"]>,
-    "onUpdateListing",
-    ParentType,
-    ContextType,
-    SubscriptionOnUpdateListingArgs
-  >;
-  onDeleteListing?: SubscriptionResolver<
-    Maybe<ResolversTypes["Listing"]>,
-    "onDeleteListing",
-    ParentType,
-    ContextType,
-    SubscriptionOnDeleteListingArgs
-  >;
+};
+
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
+> = {
+  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  discriminator?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  avatar?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   AWSTimestamp?: GraphQLScalarType;
   Listing?: ListingResolvers<ContextType>;
-  ListingConnection?: ListingConnectionResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
 
 /**
@@ -525,17 +376,17 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   defer?: DeferDirectiveResolver<any, any, ContextType>;
-  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
-  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
+  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
   aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
-  aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
+  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
   aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
+  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
   aws_cognito_user_pools?: Aws_Cognito_User_PoolsDirectiveResolver<
     any,
     any,
     ContextType
   >;
-  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
+  aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
 };
 
 /**

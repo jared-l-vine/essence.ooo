@@ -14,16 +14,12 @@ const CreateListingPage: FunctionComponent = () => {
         {
           title: "",
           description: ""
-        } as CreateListingMutationVariables["createlistinginput"]
+        } as CreateListingMutationVariables
       }
-      onSubmit={async createListingInput => {
+      onSubmit={async variables => {
         try {
           const {} = await createListing({
-            variables: {
-              createlistinginput: {
-                ...createListingInput
-              }
-            }
+            variables
           });
         } catch (ex) {
           console.log(ex);

@@ -1,9 +1,6 @@
-mutation createListing($createlistinginput: CreateListingInput!) {
-  createListing(input: $createlistinginput) {
+mutation CreateListing($title: String!, $description: String, $owner_id: ID!) {
+  createListing(title: $title, description: $description, owner_id: $owner_id) {
     id
     title
-    description
-    created_at
-    updated_at
   }
 }

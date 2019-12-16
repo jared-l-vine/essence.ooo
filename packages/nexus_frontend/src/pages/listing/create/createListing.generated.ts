@@ -5,26 +5,30 @@ import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
 
 export type CreateListingMutationVariables = {
-  createlistinginput: Types.CreateListingInput;
+  title: Types.Scalars["String"];
+  description?: Types.Maybe<Types.Scalars["String"]>;
+  owner_id: Types.Scalars["ID"];
 };
 
 export type CreateListingMutation = { __typename?: "Mutation" } & {
   createListing: Types.Maybe<
-    { __typename?: "Listing" } & Pick<
-      Types.Listing,
-      "id" | "title" | "description" | "created_at" | "updated_at"
-    >
+    { __typename?: "Listing" } & Pick<Types.Listing, "id" | "title">
   >;
 };
 
 export const CreateListingDocument = gql`
-  mutation createListing($createlistinginput: CreateListingInput!) {
-    createListing(input: $createlistinginput) {
+  mutation CreateListing(
+    $title: String!
+    $description: String
+    $owner_id: ID!
+  ) {
+    createListing(
+      title: $title
+      description: $description
+      owner_id: $owner_id
+    ) {
       id
       title
-      description
-      created_at
-      updated_at
     }
   }
 `;
@@ -46,7 +50,9 @@ export type CreateListingMutationFn = ApolloReactCommon.MutationFunction<
  * @example
  * const [createListingMutation, { data, loading, error }] = useCreateListingMutation({
  *   variables: {
- *      createlistinginput: // value for 'createlistinginput'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      owner_id: // value for 'owner_id'
  *   },
  * });
  */

@@ -5,13 +5,13 @@ resource "aws_dynamodb_table" "users" {
   hash_key     = "id"
 
   attribute {
-	name = "id"
-	type = "S"
+    name = "id"
+    type = "S"
   }
 
   tags = {
-	App  = "Nexus"
-	Site = "essence.ooo"
+    App  = "Nexus"
+    Site = "essence.ooo"
   }
 }
 resource "aws_appsync_datasource" "users" {
@@ -21,7 +21,7 @@ resource "aws_appsync_datasource" "users" {
   type             = "AMAZON_DYNAMODB"
 
   dynamodb_config {
-	table_name = "${aws_dynamodb_table.users.name}"
+    table_name = "${aws_dynamodb_table.users.name}"
   }
 }
 
@@ -60,9 +60,10 @@ resource "aws_appsync_resolver" "users_createUser" {
 	  "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
   },
 
-  #set( $values = $util.dynamodb.toMapValues($ctx.args) )
+	#set( $values = $ctx.args )
+	#set( $values.created_at = $util.time.nowEpochSeconds())
 
-  "attributeValues" : $util.toJson($values),
+	"attributeValues" :  $util.toJson($util.dynamodb.toMapValues($values)),
   "condition": {
     "expression": "attribute_not_exists(#id)",
     "expressionNames": {

@@ -1,0 +1,8 @@
+query GetListings($owner_id: ID) {
+  allListings(owner_id: $owner_id) {
+    listings {
+      id
+      title
+    }
+  }
+}

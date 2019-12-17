@@ -1,10 +1,27 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import useAuthContext from "../../services/auth";
 import { useCurrentRoute } from "react-navi";
+import discordLookup from "../../services/auth/discordLookup";
 
 const LoginOrganism: FunctionComponent = () => {
   const { url } = useCurrentRoute();
-  const { user } = useAuthContext();
+  const { user, cookie, setUser } = useAuthContext();
+  useEffect(() => {
+    async function cookieAuth() {
+      if (cookie) {
+        console.log("Found cookie");
+        const hydratedCookie = JSON.parse(cookie);
+        const user = await discordLookup(
+          hydratedCookie.token_type,
+          hydratedCookie.access_token
+        );
+        if (user) {
+          setUser(user);
+        }
+      }
+    }
+    cookieAuth();
+  }, [cookie]);
   return (
     <div>
       <span>Login Status {user ? "Logged In" : "Logged Out"}</span>

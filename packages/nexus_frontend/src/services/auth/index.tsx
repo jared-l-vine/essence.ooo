@@ -4,27 +4,36 @@ import React, {
   useState,
   ContextType,
   useMemo,
-  useContext
+  useContext,
+  useEffect
 } from "react";
+import Cookies from "js-cookie";
 import { User } from "../../../graphql/types.generated";
 
 export const AuthContext = createContext<{
   user: User | null;
   setUser: (user: User) => void;
+  cookie: any | null;
+  setCookie: (cookie: any | null) => void;
 }>({
   user: null,
   setUser: () =>
-    console.error("AuthContext setUser hasn't been initialized yet")
+    console.error("AuthContext setUser hasn't been initialized yet"),
+  cookie: null,
+  setCookie: () =>
+    console.error("AuthContext setCookie hasn't been initialized yet")
 });
 
 export const AuthContextProvider: FunctionComponent = ({ children }) => {
+  const [cookie, setCookie] = useState(() => Cookies.get("discord_token"));
   const [user, setUser] = useState<ContextType<typeof AuthContext>["user"]>(
     null
   );
   const contextValue = useMemo<ContextType<typeof AuthContext>>(
-    () => ({ user, setUser }),
-    [user, setUser]
+    () => ({ cookie, user, setUser, setCookie }),
+    [cookie, user, setUser, setCookie]
   );
+
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );

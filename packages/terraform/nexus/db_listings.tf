@@ -62,6 +62,7 @@ resource "aws_appsync_resolver" "listings_createListing" {
 
 	#set( $values = $ctx.args )
 	#set( $values.created_at = $util.time.nowEpochSeconds())
+	#set( $values.version = "2019-12-17")
 
 	"attributeValues" :  $util.toJson($util.dynamodb.toMapValues($values)),
 	"condition": {
@@ -201,5 +202,45 @@ EOF
 
   response_template = <<EOF
 $util.toJson($ctx.result)
+EOF
+}
+
+resource "aws_appsync_resolver" "listings_allListings" {
+  api_id      = "${aws_appsync_graphql_api.nexus.id}"
+  field       = "allListings"
+  type        = "Query"
+  data_source = "${aws_appsync_datasource.listings.name}"
+
+  request_template = <<EOF
+{
+    "version" : "2017-02-28",
+    "operation" : "Scan",
+        #if( ${context.arguments.owner_id} )
+    "filter" : {
+      "expression" : "#owner_id = :owner_id",
+      "expressionNames" : {
+          "#owner_id" : "owner_id"
+      },
+     "expressionValues" : {
+          ":owner_id" : { "S" : "${context.arguments.owner_id}" }
+        }
+	}
+    #end
+    #if( ${context.arguments.count} )
+        ,"limit": ${context.arguments.count}
+    #end
+    #if( ${context.arguments.nextToken} )
+        ,"nextToken": "${context.arguments.nextToken}"
+    #end
+}
+EOF
+
+  response_template = <<EOF
+{
+    "listings": $utils.toJson($context.result.items)
+    #if( ${context.result.nextToken} )
+        ,"nextToken": "${context.result.nextToken}"
+    #end
+}
 EOF
 }

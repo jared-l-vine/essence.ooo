@@ -62,6 +62,7 @@ resource "aws_appsync_resolver" "users_createUser" {
 
 	#set( $values = $ctx.args )
 	#set( $values.created_at = $util.time.nowEpochSeconds())
+	#set( $values.version = "2019-12-17")
 
 	"attributeValues" :  $util.toJson($util.dynamodb.toMapValues($values)),
   "condition": {

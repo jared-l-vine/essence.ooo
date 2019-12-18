@@ -5,7 +5,6 @@ import discordLookup from "../../services/auth/discordLookup";
 
 const LoginOrganism: FunctionComponent = () => {
   const { url } = useCurrentRoute();
-  console.log(url);
   const { user, cookie, setUser } = useAuthContext();
   useEffect(() => {
     async function cookieAuth() {

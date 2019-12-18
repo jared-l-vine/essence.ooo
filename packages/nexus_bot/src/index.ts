@@ -68,7 +68,7 @@ discordClient.on("ready", () => {
   console.log(`Logged in as ${discordClient.user.tag}!`);
 
   const findAGameChannel = discordClient.channels.find(
-    (_v, key) => key === (process.env.CHANNEL_ID || "261581340862840843")
+    (_v, key) => key === (process.env.CHANNEL_ID || "656727606875389974")
   ) as Discord.TextChannel;
 
   console.log(`found channel '${findAGameChannel.name}'`);
@@ -86,33 +86,38 @@ discordClient.on("ready", () => {
     observable.subscribe({
       start: () => console.log("starting"),
       next: async ({ data: d }) => {
-        const message = await findAGameChannel.send({
-          embed: {
-            color: 0xffff00,
-            title: `**${d.newListings?.title}**`,
-            // url: "https://discord.js.org",
-            author: {
-              name: `@${d.newListings?.owner.username}#${d.newListings?.owner.discriminator}`,
-              icon_url: `https://cdn.discordapp.com/avatars/${d.newListings?.owner.id}/${d.newListings?.owner.avatar}.png?size=32`
-              // url: "https://discord.js.org"
-            },
-            description: d.newListings?.description || undefined,
-            // thumbnail: {
-            //   url: "https://i.imgur.com/wSTFkRM.png"
-            // },
-            // fields: [],
-            // image: {
-            //   url: "https://i.imgur.com/wSTFkRM.png"
-            // },
-            timestamp: new Date(),
-            footer: {
-              text: "ne❌us"
-              // icon_url: "https://i.imgur.com/wSTFkRM.png"
+        console.log("received a new listing, posting message");
+        try {
+          const message = await findAGameChannel.send({
+            embed: {
+              color: 0xffff00,
+              title: `**${d.newListings?.title}**`,
+              // url: "https://discord.js.org",
+              author: {
+                name: `@${d.newListings?.owner.username}#${d.newListings?.owner.discriminator}`,
+                icon_url: `https://cdn.discordapp.com/avatars/${d.newListings?.owner.id}/${d.newListings?.owner.avatar}.png?size=32`
+                // url: "https://discord.js.org"
+              },
+              description: d.newListings?.description || undefined,
+              // thumbnail: {
+              //   url: "https://i.imgur.com/wSTFkRM.png"
+              // },
+              // fields: [],
+              // image: {
+              //   url: "https://i.imgur.com/wSTFkRM.png"
+              // },
+              timestamp: new Date(),
+              footer: {
+                text: "ne❌us"
+                // icon_url: "https://i.imgur.com/wSTFkRM.png"
+              }
             }
-          }
-        });
-
-        // TODO: Update listing
+          });
+          console.log("done posting");
+          // TODO: Update listing
+        } catch (ex) {
+          console.error(ex);
+        }
       },
       error: console.error,
       complete: console.log

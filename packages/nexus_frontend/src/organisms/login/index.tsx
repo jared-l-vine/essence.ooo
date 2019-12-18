@@ -5,6 +5,7 @@ import discordLookup from "../../services/auth/discordLookup";
 
 const LoginOrganism: FunctionComponent = () => {
   const { url } = useCurrentRoute();
+  console.log(url);
   const { user, cookie, setUser } = useAuthContext();
   useEffect(() => {
     async function cookieAuth() {
@@ -27,7 +28,9 @@ const LoginOrganism: FunctionComponent = () => {
       <span>Login Status {user ? "Logged In" : "Logged Out"}</span>
       {!user && (
         <a
-          href={`https://discordapp.com/api/oauth2/authorize?response_type=token&client_id=656006759533641739&scope=identify%20guilds%20guilds.join&state=${btoa(
+          href={`https://discordapp.com/api/oauth2/authorize?redirect_uri=${
+            window.location.origin
+          }/oauth/redirect&response_type=token&client_id=656006759533641739&scope=identify%20guilds%20guilds.join&state=${btoa(
             JSON.stringify(url)
           )}`}
         >

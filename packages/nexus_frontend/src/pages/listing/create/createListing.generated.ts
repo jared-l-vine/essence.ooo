@@ -12,7 +12,15 @@ export type CreateListingMutationVariables = {
 
 export type CreateListingMutation = { __typename?: "Mutation" } & {
   createListing: Types.Maybe<
-    { __typename?: "Listing" } & Pick<Types.Listing, "id" | "title">
+    { __typename?: "Listing" } & Pick<
+      Types.Listing,
+      "id" | "title" | "description" | "created_at" | "last_posted"
+    > & {
+        owner: { __typename?: "User" } & Pick<
+          Types.User,
+          "id" | "username" | "discriminator" | "avatar"
+        >;
+      }
   >;
 };
 
@@ -29,6 +37,15 @@ export const CreateListingDocument = gql`
     ) {
       id
       title
+      description
+      created_at
+      last_posted
+      owner {
+        id
+        username
+        discriminator
+        avatar
+      }
     }
   }
 `;

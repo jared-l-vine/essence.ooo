@@ -232,27 +232,6 @@ export type DeferDirectiveResolver<
   Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_Cognito_User_PoolsDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_AuthDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_OidcDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
 export type Aws_IamDirectiveResolver<
   Result,
   Parent,
@@ -260,11 +239,11 @@ export type Aws_IamDirectiveResolver<
   Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_PublishDirectiveResolver<
+export type Aws_AuthDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
-  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type Aws_SubscribeDirectiveResolver<
@@ -279,6 +258,27 @@ export type Aws_Api_KeyDirectiveResolver<
   Parent,
   ContextType = any,
   Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_OidcDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_Cognito_User_PoolsDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_PublishDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface AwsTimestampScalarConfig
@@ -408,17 +408,17 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   defer?: DeferDirectiveResolver<any, any, ContextType>;
+  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
+  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
+  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
+  aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
+  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
   aws_cognito_user_pools?: Aws_Cognito_User_PoolsDirectiveResolver<
     any,
     any,
     ContextType
   >;
-  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
-  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
-  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
   aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
-  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
-  aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
 };
 
 /**

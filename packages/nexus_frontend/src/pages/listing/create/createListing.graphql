@@ -2,5 +2,14 @@ mutation CreateListing($title: String!, $description: String, $owner_id: ID!) {
   createListing(title: $title, description: $description, owner_id: $owner_id) {
     id
     title
+    description
+    created_at
+    last_posted
+    owner {
+      id
+      username
+      discriminator
+      avatar
+    }
   }
 }

@@ -35,7 +35,14 @@ export type Listing = {
   description?: Maybe<Scalars["String"]>;
   created_at: Scalars["AWSTimestamp"];
   last_posted?: Maybe<Scalars["AWSTimestamp"]>;
+  owner_id: Scalars["ID"];
   owner: User;
+};
+
+export type ListingConnection = {
+  __typename?: "ListingConnection";
+  listings?: Maybe<Array<Maybe<Listing>>>;
+  nextToken?: Maybe<Scalars["String"]>;
 };
 
 export type Mutation = {
@@ -60,12 +67,16 @@ export type MutationCreateUserArgs = {
 export type Query = {
   __typename?: "Query";
   listing?: Maybe<Listing>;
-  allListings?: Maybe<Array<Maybe<Listing>>>;
+  allListings?: Maybe<ListingConnection>;
   user?: Maybe<User>;
 };
 
 export type QueryListingArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryAllListingsArgs = {
+  owner_id?: Maybe<Scalars["ID"]>;
 };
 
 export type QueryUserArgs = {
@@ -194,6 +205,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars["String"]>;
   AWSTimestamp: ResolverTypeWrapper<Scalars["AWSTimestamp"]>;
   User: ResolverTypeWrapper<User>;
+  ListingConnection: ResolverTypeWrapper<ListingConnection>;
   Mutation: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
@@ -207,6 +219,7 @@ export type ResolversParentTypes = {
   String: Scalars["String"];
   AWSTimestamp: Scalars["AWSTimestamp"];
   User: User;
+  ListingConnection: ListingConnection;
   Mutation: {};
   Subscription: {};
   Boolean: Scalars["Boolean"];
@@ -219,6 +232,27 @@ export type DeferDirectiveResolver<
   Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type Aws_AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_Api_KeyDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_PublishDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type Aws_OidcDirectiveResolver<
   Result,
   Parent,
@@ -226,7 +260,14 @@ export type Aws_OidcDirectiveResolver<
   Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_Api_KeyDirectiveResolver<
+export type Aws_SubscribeDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_IamDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
@@ -238,34 +279,6 @@ export type Aws_Cognito_User_PoolsDirectiveResolver<
   Parent,
   ContextType = any,
   Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_SubscribeDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_AuthDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_PublishDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_IamDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface AwsTimestampScalarConfig
@@ -294,7 +307,24 @@ export type ListingResolvers<
     ParentType,
     ContextType
   >;
+  owner_id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+};
+
+export type ListingConnectionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ListingConnection"] = ResolversParentTypes["ListingConnection"]
+> = {
+  listings?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Listing"]>>>,
+    ParentType,
+    ContextType
+  >;
+  nextToken?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
 };
 
 export type MutationResolvers<
@@ -326,9 +356,10 @@ export type QueryResolvers<
     RequireFields<QueryListingArgs, "id">
   >;
   allListings?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Listing"]>>>,
+    Maybe<ResolversTypes["ListingConnection"]>,
     ParentType,
-    ContextType
+    ContextType,
+    QueryAllListingsArgs
   >;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
@@ -363,6 +394,7 @@ export type UserResolvers<
 export type Resolvers<ContextType = any> = {
   AWSTimestamp?: GraphQLScalarType;
   Listing?: ListingResolvers<ContextType>;
+  ListingConnection?: ListingConnectionResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
@@ -376,17 +408,17 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   defer?: DeferDirectiveResolver<any, any, ContextType>;
-  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
+  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
   aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
+  aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
+  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
+  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
+  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
   aws_cognito_user_pools?: Aws_Cognito_User_PoolsDirectiveResolver<
     any,
     any,
     ContextType
   >;
-  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
-  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
-  aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
-  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
 };
 
 /**

@@ -9,11 +9,14 @@
   - [x] Create listing from UI
   - [x] Deploy
   - [ ] Creation confirmation
+  - [ ] Title for pages
+  - [ ] More fields
 - Bot
   - [x] Auth w Discord
   - [x] Connect to Appsync, subscribe to new listings
   - [x] Connect to a channel and send embed on new listing
   - [ ] Deploy
+  - [ ] Support additional fields
 - Terraform
   - [x] Config as code
 
@@ -31,3 +34,4 @@
   - [ ] Bot updates listing
 - Terraform
   - [ ] Figure out string parsing bug w appsync resolvers
+  - [ ] AppSync - only allow requests from essence.ooo

@@ -5,7 +5,6 @@ import {
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client";
-import LoginOrganism from "./organisms/login";
 import { AuthContextProvider } from "./services/auth";
 import { Router, View } from "react-navi";
 import { mount, route } from "navi";
@@ -47,7 +46,6 @@ const LazyApp: FunctionComponent = () => {
       <ApolloProvider client={client}>
         <Router routes={routes}>
           <Suspense fallback="loading">
-            <LoginOrganism />
             <View />
           </Suspense>
         </Router>

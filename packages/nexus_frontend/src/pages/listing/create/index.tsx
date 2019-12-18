@@ -7,6 +7,7 @@ import {
 } from "./createListing.generated";
 import { useGetListingsLazyQuery } from "./GetListings.generated";
 import useAuthContext from "../../../services/auth";
+import LoginOrganism from "../../../organisms/login";
 
 const CreateListingPage: FunctionComponent = () => {
   const { user } = useAuthContext();
@@ -22,7 +23,21 @@ const CreateListingPage: FunctionComponent = () => {
     }
   }, [user]);
   return (
-    <Fragment>
+    <div
+      style={{
+        maxWidth: "100%",
+        width: 600,
+        height: "100%",
+        background: "#fbfaf499",
+        padding: 6,
+        boxSizing: "border-box",
+        margin: "0 auto",
+        borderLeft: "2px solid #fbfaf4",
+        borderRight: "2px solid #fbfaf4"
+      }}
+    >
+      <LoginOrganism />
+
       <h2>Create New Listing</h2>
       <Formik
         initialValues={
@@ -50,8 +65,7 @@ const CreateListingPage: FunctionComponent = () => {
             <Form
               style={{
                 display: "flex",
-                flexDirection: "column",
-                maxWidth: 600
+                flexDirection: "column"
               }}
             >
               <fieldset disabled={!user || loading}>
@@ -85,7 +99,7 @@ const CreateListingPage: FunctionComponent = () => {
           </ul>
         </Fragment>
       )}
-    </Fragment>
+    </div>
   );
 };
 

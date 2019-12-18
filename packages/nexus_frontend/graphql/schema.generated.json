@@ -216,6 +216,54 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "edition",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "medium",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "players",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "schedule",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -315,6 +363,16 @@
         "possibleTypes": null
       },
       {
+        "kind": "SCALAR",
+        "name": "Int",
+        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "ListingConnection",
         "description": "",
@@ -397,6 +455,46 @@
                     "name": "ID",
                     "ofType": null
                   }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "edition",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "medium",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "players",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "schedule",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 },
                 "defaultValue": null
               }
@@ -1318,15 +1416,30 @@
         "args": []
       },
       {
-        "name": "aws_oidc",
-        "description": "Tells the service this field/object has access authorized by an OIDC token.",
-        "locations": ["OBJECT", "FIELD_DEFINITION"],
-        "args": []
+        "name": "aws_publish",
+        "description": "Tells the service which subscriptions will be published to when this mutation is\ncalled. This directive is deprecated use @aws_susbscribe directive instead.",
+        "locations": ["FIELD_DEFINITION"],
+        "args": [
+          {
+            "name": "subscriptions",
+            "description": "List of subscriptions which will be published to when this mutation is called.",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
       },
       {
-        "name": "aws_cognito_user_pools",
-        "description": "Tells the service this field/object has access authorized by a Cognito User Pools token.",
-        "locations": ["OBJECT", "FIELD_DEFINITION"],
+        "name": "aws_auth",
+        "description": "Directs the schema to enforce authorization on a field",
+        "locations": ["FIELD_DEFINITION"],
         "args": [
           {
             "name": "cognito_groups",
@@ -1345,13 +1458,19 @@
         ]
       },
       {
-        "name": "aws_publish",
-        "description": "Tells the service which subscriptions will be published to when this mutation is\ncalled. This directive is deprecated use @aws_susbscribe directive instead.",
-        "locations": ["FIELD_DEFINITION"],
+        "name": "aws_iam",
+        "description": "Tells the service this field/object has access authorized by sigv4 signing.",
+        "locations": ["OBJECT", "FIELD_DEFINITION"],
+        "args": []
+      },
+      {
+        "name": "aws_cognito_user_pools",
+        "description": "Tells the service this field/object has access authorized by a Cognito User Pools token.",
+        "locations": ["OBJECT", "FIELD_DEFINITION"],
         "args": [
           {
-            "name": "subscriptions",
-            "description": "List of subscriptions which will be published to when this mutation is called.",
+            "name": "cognito_groups",
+            "description": "List of cognito user pool groups which have access on this field",
             "type": {
               "kind": "LIST",
               "name": null,
@@ -1387,35 +1506,14 @@
         ]
       },
       {
-        "name": "aws_api_key",
-        "description": "Tells the service this field/object has access authorized by an API key.",
+        "name": "aws_oidc",
+        "description": "Tells the service this field/object has access authorized by an OIDC token.",
         "locations": ["OBJECT", "FIELD_DEFINITION"],
         "args": []
       },
       {
-        "name": "aws_auth",
-        "description": "Directs the schema to enforce authorization on a field",
-        "locations": ["FIELD_DEFINITION"],
-        "args": [
-          {
-            "name": "cognito_groups",
-            "description": "List of cognito user pool groups which have access on this field",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ]
-      },
-      {
-        "name": "aws_iam",
-        "description": "Tells the service this field/object has access authorized by sigv4 signing.",
+        "name": "aws_api_key",
+        "description": "Tells the service this field/object has access authorized by an API key.",
         "locations": ["OBJECT", "FIELD_DEFINITION"],
         "args": []
       },

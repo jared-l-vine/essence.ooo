@@ -11,5 +11,9 @@ mutation CreateListing($title: String!, $description: String, $owner_id: ID!) {
       discriminator
       avatar
     }
+    edition
+    medium
+    players
+    schedule
   }
 }

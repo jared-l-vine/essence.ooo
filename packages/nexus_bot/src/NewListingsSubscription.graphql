@@ -9,5 +9,9 @@ subscription NewListingsSubscription {
       discriminator
       avatar
     }
+    edition
+    medium
+    players
+    schedule
   }
 }

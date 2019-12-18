@@ -8,7 +8,13 @@ export type NewListingsSubscriptionSubscription = {
   newListings: Types.Maybe<
     { __typename?: "Listing" } & Pick<
       Types.Listing,
-      "id" | "title" | "description"
+      | "id"
+      | "title"
+      | "description"
+      | "edition"
+      | "medium"
+      | "players"
+      | "schedule"
     > & {
         owner: { __typename?: "User" } & Pick<
           Types.User,
@@ -32,6 +38,10 @@ export const NewListingsSubscription = gql`
         discriminator
         avatar
       }
+      edition
+      medium
+      players
+      schedule
     }
   }
 `;

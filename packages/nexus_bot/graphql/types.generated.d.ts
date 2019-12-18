@@ -37,6 +37,10 @@ export type Listing = {
   last_posted?: Maybe<Scalars["AWSTimestamp"]>;
   owner_id: Scalars["ID"];
   owner: User;
+  edition?: Maybe<Scalars["String"]>;
+  medium?: Maybe<Scalars["String"]>;
+  players?: Maybe<Scalars["Int"]>;
+  schedule?: Maybe<Scalars["String"]>;
 };
 
 export type ListingConnection = {
@@ -55,6 +59,10 @@ export type MutationCreateListingArgs = {
   title: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   owner_id: Scalars["ID"];
+  edition?: Maybe<Scalars["String"]>;
+  medium?: Maybe<Scalars["String"]>;
+  players?: Maybe<Scalars["Int"]>;
+  schedule?: Maybe<Scalars["String"]>;
 };
 
 export type MutationCreateUserArgs = {
@@ -205,6 +213,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars["String"]>;
   AWSTimestamp: ResolverTypeWrapper<Scalars["AWSTimestamp"]>;
   User: ResolverTypeWrapper<User>;
+  Int: ResolverTypeWrapper<Scalars["Int"]>;
   ListingConnection: ResolverTypeWrapper<ListingConnection>;
   Mutation: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
@@ -219,6 +228,7 @@ export type ResolversParentTypes = {
   String: Scalars["String"];
   AWSTimestamp: Scalars["AWSTimestamp"];
   User: User;
+  Int: Scalars["Int"];
   ListingConnection: ListingConnection;
   Mutation: {};
   Subscription: {};
@@ -226,6 +236,34 @@ export type ResolversParentTypes = {
 };
 
 export type DeferDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = {}
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_PublishDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_Cognito_User_PoolsDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_SubscribeDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type Aws_IamDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
@@ -246,39 +284,11 @@ export type Aws_Api_KeyDirectiveResolver<
   Args = {}
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Aws_PublishDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { subscriptions?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
 export type Aws_OidcDirectiveResolver<
   Result,
   Parent,
   ContextType = any,
   Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_SubscribeDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { mutations?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_IamDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = {}
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type Aws_Cognito_User_PoolsDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = { cognito_groups?: Maybe<Maybe<Array<Maybe<Scalars["String"]>>>> }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface AwsTimestampScalarConfig
@@ -309,6 +319,10 @@ export type ListingResolvers<
   >;
   owner_id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  edition?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  medium?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  players?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  schedule?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
 };
 
 export type ListingConnectionResolvers<
@@ -408,17 +422,17 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   defer?: DeferDirectiveResolver<any, any, ContextType>;
-  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
-  aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
   aws_publish?: Aws_PublishDirectiveResolver<any, any, ContextType>;
-  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
-  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
-  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
   aws_cognito_user_pools?: Aws_Cognito_User_PoolsDirectiveResolver<
     any,
     any,
     ContextType
   >;
+  aws_subscribe?: Aws_SubscribeDirectiveResolver<any, any, ContextType>;
+  aws_iam?: Aws_IamDirectiveResolver<any, any, ContextType>;
+  aws_auth?: Aws_AuthDirectiveResolver<any, any, ContextType>;
+  aws_api_key?: Aws_Api_KeyDirectiveResolver<any, any, ContextType>;
+  aws_oidc?: Aws_OidcDirectiveResolver<any, any, ContextType>;
 };
 
 /**

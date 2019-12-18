@@ -11,7 +11,7 @@ import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 
 import { ApolloLink } from "apollo-link";
 import { createHttpLink } from "apollo-link-http";
-import ApolloClient from "apollo-client";
+import ApolloClient, { ApolloQueryResult } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import Observable from "zen-observable";
 import fetch from "node-fetch";
@@ -109,56 +109,57 @@ const gqlClient = new ApolloClient({
 discordClient.on("ready", () => {
   console.log(`Logged in as ${discordClient.user.tag}!`);
 
+  const findAGameChannel = discordClient.channels.find(
+    // @ts-ignore
+    (_v, key) => key === "261581340862840843" || process.env.CHANNEL_ID
+  ) as Discord.TextChannel;
+
+  console.log(`found channel '${findAGameChannel.name}'`);
+
   try {
     console.log("starting sub");
-    const observable = gqlClient.subscribe({
+    const observable = gqlClient.subscribe<
+      ApolloQueryResult<NewListingsSubscriptionSubscription>,
+      NewListingsSubscriptionSubscriptionVariables
+    >({
       query: NewListingsSubscription
     });
 
-    console.log("sub subscribed", observable);
+    console.log("sub subscribed");
     observable.subscribe({
       start: () => console.log("starting"),
-      next: console.log,
+      next: async ({ data: d }) => {
+        const message = await findAGameChannel.send({
+          embed: {
+            color: 0xffff00,
+            title: `**${d.newListings?.title}**`,
+            // url: "https://discord.js.org",
+            author: {
+              name: `@${d.newListings?.owner.username}#${d.newListings?.owner.discriminator}`,
+              icon_url: `https://cdn.discordapp.com/avatars/${d.newListings?.owner.id}/${d.newListings?.owner.avatar}.png?size=32`
+              // url: "https://discord.js.org"
+            },
+            description: d.newListings?.description || undefined,
+            // thumbnail: {
+            //   url: "https://i.imgur.com/wSTFkRM.png"
+            // },
+            // fields: [],
+            // image: {
+            //   url: "https://i.imgur.com/wSTFkRM.png"
+            // },
+            timestamp: new Date(),
+            footer: {
+              text: "ne❌us"
+              // icon_url: "https://i.imgur.com/wSTFkRM.png"
+            }
+          }
+        });
+
+        // TODO: Update listing
+      },
       error: console.error,
       complete: console.log
     });
-
-    setTimeout(async () => {
-      console.log("starting mutation");
-      const mutation = gqlClient
-        .mutate({
-          mutation: gql`
-            mutation CreateListing {
-              createListing(
-                title: "test1"
-                description: "test2"
-                owner_id: "190654235778482176"
-              ) {
-                id
-                title
-                owner {
-                  id
-                  username
-                  discriminator
-                  avatar
-                }
-              }
-            }
-          `,
-          errorPolicy: "all"
-        })
-        .catch(x => {
-          console.error(x);
-          return x;
-        });
-
-      const { errors, data } = await mutation;
-      if (!errors) {
-        console.log("mutated", data);
-      } else {
-        errors.forEach(console.error);
-      }
-    }, 5000);
   } catch (ex) {
     console.error(ex);
   }

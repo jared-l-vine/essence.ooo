@@ -14,6 +14,8 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
 import { AuthOptions } from "aws-appsync-auth-link";
 import ws from "ws";
+import * as Sentry from "@sentry/node";
+import * as Integrations from "@sentry/integrations";
 
 // TODO: whole bunch of cleanup. Uninstall unused node modules
 // Look at upgrading to Apollo 3
@@ -25,6 +27,16 @@ import ws from "ws";
 ].forEach(variableName => {
   if (!process.env[variableName])
     throw new Error(`Could not find environment variable '${variableName}`);
+});
+
+Sentry.init({
+  dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
+  environment: process.env.NODE_ENV,
+  integrations: [
+    new Integrations.CaptureConsole({
+      levels: ["error"]
+    })
+  ]
 });
 
 const discordClient = new Discord.Client();

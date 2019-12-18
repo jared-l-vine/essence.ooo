@@ -61,6 +61,7 @@ resource "aws_appsync_resolver" "listings_createListing" {
 	},
 
 	#set( $values = $ctx.args )
+	#set( $values.id = $util.autoID())
 	#set( $values.created_at = $util.time.nowEpochSeconds())
 	#set( $values.version = "2019-12-17")
 

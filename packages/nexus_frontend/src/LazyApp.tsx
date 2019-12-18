@@ -20,7 +20,7 @@ import * as Integrations from '@sentry/integrations';
 
 Sentry.init({
   dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
-  release: process.env.GIT_SHA,
+  release: process.env.AWS_COMMIT_ID,
   environment: process.env.NODE_ENV,
   integrations: [
     new Integrations.CaptureConsole({

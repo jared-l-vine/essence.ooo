@@ -35,3 +35,7 @@
 - Terraform
   - [ ] Figure out string parsing bug w appsync resolvers
   - [ ] AppSync - only allow requests from essence.ooo
+
+## Future
+
+- Think of moving to pubsub?

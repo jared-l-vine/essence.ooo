@@ -8,6 +8,8 @@ import {
 import { AuthContextProvider } from "./services/auth";
 import { Router, View } from "react-navi";
 import { mount, route } from "navi";
+import * as Sentry from "@sentry/browser";
+import * as Integrations from '@sentry/integrations';
 
 ["REACT_APP_APPSYNC_GRAPHQL_ENDPOINT", "REACT_APP_APPSYNC_API_KEY"].forEach(
   variableName => {
@@ -15,6 +17,21 @@ import { mount, route } from "navi";
       throw new Error(`Could not find environment variable '${variableName}`);
   }
 );
+
+Sentry.init({
+  dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
+  release: process.env.GIT_SHA,
+  environment: process.env.NODE_ENV,
+  integrations: [
+    new Integrations.CaptureConsole({
+      levels: ["error"]
+    })
+  ]
+});
+
+Sentry.configureScope(function(scope) {
+  scope.setTag("origin", window.location.origin);
+});
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, Fragment, useEffect } from "react";
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field as FormikField } from "formik";
 import {
   useCreateListingMutation,
   CreateListingMutationVariables
@@ -8,6 +8,8 @@ import {
 import { useGetListingsLazyQuery } from "./GetListings.generated";
 import useAuthContext from "../../../services/auth";
 import LoginOrganism from "../../../organisms/login";
+import Field from "../../../molecules/Field";
+import SelectField from "../../../molecules/Field/Select";
 
 const CreateListingPage: FunctionComponent = () => {
   const { user } = useAuthContext();
@@ -22,6 +24,7 @@ const CreateListingPage: FunctionComponent = () => {
       getListings({ variables: { owner_id: user.id } });
     }
   }, [user]);
+
   return (
     <div
       style={{
@@ -43,7 +46,11 @@ const CreateListingPage: FunctionComponent = () => {
         initialValues={
           {
             title: "",
-            description: ""
+            description: "",
+            edition: "Third",
+            medium: "Online Voice",
+            schedule: undefined,
+            players: 5
           } as CreateListingMutationVariables
         }
         onSubmit={async variables => {
@@ -59,8 +66,9 @@ const CreateListingPage: FunctionComponent = () => {
           }
         }}
       >
-        {({ isValid }) => (
+        {({ isValid, setFieldValue, values }) => (
           <Fragment>
+            {console.log(values)}
             {error && <span>{error.message}</span>}
             <Form
               style={{
@@ -69,18 +77,35 @@ const CreateListingPage: FunctionComponent = () => {
               }}
             >
               <fieldset disabled={!user || loading}>
-                <label style={{ display: "flex", flexDirection: "column" }}>
-                  <span>Name</span>
-                  <Field type="text" name="title" placeholder="Game Name" />
-                </label>
-                <label style={{ display: "flex", flexDirection: "column" }}>
-                  <span>Description</span>
-                  <Field
-                    component="textarea"
-                    name="description"
-                    placeholder="Description"
+                <Field name="title" label="Game Name" />
+                <div style={{ display: "flex", flexBasis: "33%" }}>
+                  <SelectField
+                    name="edition"
+                    label="Edition"
+                    options={["First", "Second", "Third"].map(v => ({
+                      label: v,
+                      value: v
+                    }))}
                   />
-                </label>
+                  <SelectField
+                    name="medium"
+                    label="Play Medium"
+                    options={["Online Voice", "Online Text", "In Person"].map(
+                      v => ({
+                        label: v,
+                        value: v
+                      })
+                    )}
+                  />
+                  <Field name="players" label="Players" fieldType="number" />
+                </div>
+                <Field name="schedule" label="Schedule" />
+                <Field
+                  name="description"
+                  label="Description"
+                  fieldType="textarea"
+                />
+
                 <button type="submit" disabled={!isValid}>
                   Create Listing
                 </button>

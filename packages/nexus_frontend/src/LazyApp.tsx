@@ -9,7 +9,7 @@ import { AuthContextProvider } from "./services/auth";
 import { Router, View } from "react-navi";
 import { mount, route } from "navi";
 import * as Sentry from "@sentry/browser";
-import * as Integrations from '@sentry/integrations';
+import * as Integrations from "@sentry/integrations";
 
 ["REACT_APP_APPSYNC_GRAPHQL_ENDPOINT", "REACT_APP_APPSYNC_API_KEY"].forEach(
   variableName => {
@@ -31,6 +31,7 @@ Sentry.init({
 
 Sentry.configureScope(function(scope) {
   scope.setTag("origin", window.location.origin);
+  scope.setTag("app", "web");
 });
 
 const client = new ApolloClient({

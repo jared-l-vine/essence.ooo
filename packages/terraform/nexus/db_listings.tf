@@ -185,6 +185,90 @@ $util.toJson($ctx.result.last_posted)
 EOF
 }
 
+resource "aws_appsync_resolver" "listings_Listing_edition" {
+  api_id      = "${aws_appsync_graphql_api.nexus.id}"
+  field       = "edition"
+  type        = "Listing"
+  data_source = "${aws_appsync_datasource.listings.name}"
+
+  request_template = <<EOF
+{
+    "version": "2017-02-28",
+    "operation": "GetItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.source.id),
+    }
+}
+EOF
+
+  response_template = <<EOF
+$util.toJson($ctx.result.edition)
+EOF
+}
+
+resource "aws_appsync_resolver" "listings_Listing_medium" {
+  api_id      = "${aws_appsync_graphql_api.nexus.id}"
+  field       = "medium"
+  type        = "Listing"
+  data_source = "${aws_appsync_datasource.listings.name}"
+
+  request_template = <<EOF
+{
+    "version": "2017-02-28",
+    "operation": "GetItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.source.id),
+    }
+}
+EOF
+
+  response_template = <<EOF
+$util.toJson($ctx.result.medium)
+EOF
+}
+
+resource "aws_appsync_resolver" "listings_Listing_players" {
+  api_id      = "${aws_appsync_graphql_api.nexus.id}"
+  field       = "players"
+  type        = "Listing"
+  data_source = "${aws_appsync_datasource.listings.name}"
+
+  request_template = <<EOF
+{
+    "version": "2017-02-28",
+    "operation": "GetItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.source.id),
+    }
+}
+EOF
+
+  response_template = <<EOF
+$util.toJson($ctx.result.players)
+EOF
+}
+
+resource "aws_appsync_resolver" "listings_Listing_schedule" {
+  api_id      = "${aws_appsync_graphql_api.nexus.id}"
+  field       = "schedule"
+  type        = "Listing"
+  data_source = "${aws_appsync_datasource.listings.name}"
+
+  request_template = <<EOF
+{
+    "version": "2017-02-28",
+    "operation": "GetItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.source.id),
+    }
+}
+EOF
+
+  response_template = <<EOF
+$util.toJson($ctx.result.schedule)
+EOF
+}
+
 resource "aws_appsync_resolver" "listings_Listing_owner" {
   api_id      = "${aws_appsync_graphql_api.nexus.id}"
   field       = "owner"

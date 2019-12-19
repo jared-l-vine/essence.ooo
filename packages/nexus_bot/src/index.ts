@@ -74,8 +74,6 @@ const gqlClient = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-///////////////////////////////////////////////////
-
 discordClient.on("ready", () => {
   console.log(`Logged in as ${discordClient.user.tag}!`);
 
@@ -114,7 +112,27 @@ discordClient.on("ready", () => {
               // thumbnail: {
               //   url: "https://i.imgur.com/wSTFkRM.png"
               // },
-              // fields: [],
+              fields: [
+                d.newListings?.edition && {
+                  name: "Edition",
+                  value: d.newListings.edition,
+                  inline: true
+                },
+                d.newListings?.medium && {
+                  name: "Medium",
+                  value: d.newListings.medium,
+                  inline: true
+                },
+                d.newListings?.players && {
+                  name: "Players",
+                  value: d.newListings.players,
+                  inline: true
+                },
+                d.newListings?.schedule && {
+                  name: "Schedule",
+                  value: d.newListings.schedule
+                }
+              ].filter(Boolean),
               // image: {
               //   url: "https://i.imgur.com/wSTFkRM.png"
               // },

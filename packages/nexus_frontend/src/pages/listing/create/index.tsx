@@ -50,7 +50,8 @@ const CreateListingPage: FunctionComponent = () => {
             edition: "Third",
             medium: "Online Voice",
             schedule: undefined,
-            players: 5
+            players: 5,
+            owner_id: user?.id
           } as CreateListingMutationVariables
         }
         onSubmit={async variables => {

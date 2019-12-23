@@ -5,7 +5,7 @@ import {
   useCreateListingMutation,
   CreateListingMutationVariables
 } from "./CreateListing.generated";
-import { useGetListingsLazyQuery } from "./GetListings.generated";
+// import { useGetListingsLazyQuery } from "./GetListings.generated";
 import useAuthContext from "../../../services/auth";
 import LoginOrganism from "../../../organisms/login";
 import Field from "../../../molecules/Field";
@@ -13,19 +13,17 @@ import SelectField from "../../../molecules/Field/Select";
 
 const CreateListingPage: FunctionComponent = () => {
   const { user } = useAuthContext();
-  const [
-    getListings,
-    { data: getListingsData, error: getListingsError }
-  ] = useGetListingsLazyQuery();
+  // const [
+  //   getListings,
+  //   { data: getListingsData, error: getListingsError }
+  // ] = useGetListingsLazyQuery();
   const [createListing, { loading, error }] = useCreateListingMutation();
 
-  useEffect(() => {
-    if (user) {
-      getListings({ variables: { owner_id: user.id } });
-    }
-  }, [user]);
-
-  console.log(user);
+  // useEffect(() => {
+  //   if (user) {
+  //     getListings({ variables: { owner_id: user.id } });
+  //   }
+  // }, [user]);
 
   return (
     <div
@@ -56,22 +54,21 @@ const CreateListingPage: FunctionComponent = () => {
             owner_id: toNumber(user?.id)
           } as CreateListingMutationVariables
         }
-        onSubmit={async variables => {
+        onSubmit={async (variables, formik) => {
           try {
             const { data, errors } = await createListing({
               variables: { ...variables, owner_id: toNumber(user?.id) }
             });
             if (!errors) {
-              console.log(data);
+              formik.resetForm();
             }
           } catch (ex) {
-            console.log(ex);
+            console.error(ex);
           }
         }}
       >
         {({ isValid, setFieldValue, values }) => (
           <Fragment>
-            {console.log(values)}
             {error && <span>{error.message}</span>}
             <Form
               style={{
@@ -81,7 +78,17 @@ const CreateListingPage: FunctionComponent = () => {
             >
               <fieldset disabled={!user || loading}>
                 <Field name="title" label="Game Name" />
-                <div style={{ display: "flex", flexBasis: "33%" }}>
+                <Field
+                  name="description"
+                  label="Description"
+                  fieldType="textarea"
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}
+                >
                   <SelectField
                     name="edition"
                     label="Edition"
@@ -90,9 +97,10 @@ const CreateListingPage: FunctionComponent = () => {
                       value: v
                     }))}
                   />
+
                   <SelectField
                     name="medium"
-                    label="Play Medium"
+                    label="Medium"
                     options={["Online Voice", "Online Text", "In Person"].map(
                       v => ({
                         label: v,
@@ -100,14 +108,15 @@ const CreateListingPage: FunctionComponent = () => {
                       })
                     )}
                   />
-                  <Field name="players" label="Players" fieldType="number" />
+
+                  <Field
+                    name="players"
+                    label="Players"
+                    fieldType="number"
+                    flexDirection="row"
+                  />
                 </div>
                 <Field name="schedule" label="Schedule" />
-                <Field
-                  name="description"
-                  label="Description"
-                  fieldType="textarea"
-                />
 
                 <button type="submit" disabled={!isValid}>
                   Create Listing
@@ -117,7 +126,7 @@ const CreateListingPage: FunctionComponent = () => {
           </Fragment>
         )}
       </Formik>
-      {(getListingsData?.listings?.length ?? 0) > 0 && (
+      {/* {(getListingsData?.listings?.length ?? 0) > 0 && (
         <Fragment>
           <h2>Your Listings</h2>
           <ul>
@@ -126,7 +135,7 @@ const CreateListingPage: FunctionComponent = () => {
             ))}
           </ul>
         </Fragment>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, CSSProperties } from "react";
 import { Field as FormikField } from "formik";
 
 const Field: FunctionComponent<{
@@ -6,14 +6,22 @@ const Field: FunctionComponent<{
   label?: string;
   fieldType?: string;
   placeholder?: string | null;
-}> = ({ name, label = name, fieldType = "text", placeholder = label }) => (
-  <label style={{ display: "flex", flexDirection: "column" }}>
+  flexDirection?: CSSProperties["flexDirection"];
+}> = ({
+  name,
+  label = name,
+  fieldType = "text",
+  placeholder = label,
+  flexDirection = "column"
+}) => (
+  <label style={{ display: "flex", flexDirection: flexDirection }}>
     <span>{label}</span>
     <FormikField
       type={fieldType}
       name={name}
       placeholder={placeholder}
       component={fieldType === "textarea" ? "textarea" : undefined}
+      style={fieldType === "number" ? { width: "50px" } : undefined}
     />
   </label>
 );

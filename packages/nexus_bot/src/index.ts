@@ -22,11 +22,18 @@ const discordClient = new Discord.Client();
 
 discordClient.login(process.env.DISCORD_TOKEN);
 
+discordClient.on("error", error => {
+  console.error("Discord Error");
+  console.error(error.name);
+  console.error(error.message);
+  console.error(error);
+});
+
 const sleep = async (timeout: number) =>
   new Promise(res => setTimeout(res, timeout));
 
 export default async (event: { body: string }) => {
-  console.info("starting");
+  console.info("starting latest");
 
   const body = JSON.parse(event.body);
   console.log(event);
@@ -59,6 +66,7 @@ export default async (event: { body: string }) => {
   console.log(user);
 
   let finished = false;
+  let message: Discord.Message | Discord.Message[];
 
   discordClient.on("ready", async () => {
     console.log(`Logged in as ${discordClient.user.tag}!`);
@@ -72,7 +80,7 @@ export default async (event: { body: string }) => {
     try {
       // post
       console.log("posting message");
-      const message = await findAGameChannel.send({
+      message = await findAGameChannel.send({
         embed: {
           color: 0xffff00,
           title: `**${listing?.title}**`,
@@ -132,11 +140,32 @@ export default async (event: { body: string }) => {
   });
 
   while (!finished) {
-    console.info("sleep");
+    console.info(
+      "sleep",
+      discordClient.status,
+      discordClient.readyAt,
+      discordClient.pings
+    );
+    if (discordClient.status === 5) {
+      console.warn("disconnected");
+      break;
+    }
     await sleep(250);
   }
   console.info("shutting down");
-  return {
-    status: 200
-  };
+  await discordClient.destroy();
+  console.info("destroyed discord connection");
+
+  if (
+    // @ts-ignore
+    message
+  ) {
+    return {
+      statusCode: "200"
+    };
+  } else {
+    return {
+      statusCode: "500"
+    };
+  }
 };

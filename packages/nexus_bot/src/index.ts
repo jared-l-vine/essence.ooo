@@ -26,13 +26,11 @@ const sleep = async (timeout: number) =>
   new Promise(res => setTimeout(res, timeout));
 
 export default async (event: { body: string }) => {
-  console.log("starting");
-  console.log("=========");
-  console.log(event);
-  console.log("=========");
+  console.info("starting");
 
   const body = JSON.parse(event.body);
-
+  console.log(event);
+  console.log(body);
   const {
     event: {
       data: { old, new: listing },
@@ -73,6 +71,7 @@ export default async (event: { body: string }) => {
 
     try {
       // post
+      console.log("posting message");
       const message = await findAGameChannel.send({
         embed: {
           color: 0xffff00,
@@ -118,17 +117,23 @@ export default async (event: { body: string }) => {
           }
         }
       });
+      if ((message as Discord.Message[]).length) {
+        console.log((message as Discord.Message[]).map(m => m.id));
+      } else {
+        console.log((message as Discord.Message).id);
+      }
       // update listing
     } catch (ex) {
       console.error(ex);
     } finally {
-      console.log("finished");
+      console.info("finished");
       finished = true;
     }
   });
 
   while (!finished) {
-    await sleep(100);
+    console.info("sleep");
+    await sleep(250);
   }
-  console.log("shutting down");
+  console.info("shutting down");
 };

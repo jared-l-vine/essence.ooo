@@ -51,7 +51,7 @@ const CreateListingPage: FunctionComponent = () => {
             edition: "Third",
             medium: "Online Voice",
             schedule: undefined,
-            players: 5,
+            players: undefined,
             owner_id: toNumber(user?.id)
           } as CreateListingMutationVariables
         }
@@ -132,6 +132,7 @@ const CreateListingPage: FunctionComponent = () => {
                     label="Players"
                     fieldType="number"
                     flexDirection="row"
+                    placeholder="0"
                   />
                 </div>
                 <Field name="schedule" label="Schedule" />

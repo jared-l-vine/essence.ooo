@@ -1,8 +1,6 @@
-query GetListings($owner_id: ID) {
-  allListings(owner_id: $owner_id) {
-    listings {
-      id
-      title
-    }
+query GetListings($owner_id: Int) {
+  listings(where: {owner_id: {_eq: $owner_id}}) {
+    id
+    title
   }
 }

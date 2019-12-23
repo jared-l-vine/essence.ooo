@@ -1,0 +1,25 @@
+mutation CreateListing(
+  $title: String!
+  $description: String
+  $owner_id: Int!
+  $edition: String
+  $medium: String
+  $players: Int
+  $schedule: String
+) {
+  insert_listings(
+    objects: {
+      title: $title
+      description: $description
+      edition: $edition
+      medium: $medium
+      owner_id: $owner_id
+      players: $players
+      schedule: $schedule
+    }
+  ) {
+    returning {
+      id
+    }
+  }
+}

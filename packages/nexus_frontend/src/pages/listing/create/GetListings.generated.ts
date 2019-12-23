@@ -5,30 +5,20 @@ import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
 
 export type GetListingsQueryVariables = {
-  owner_id?: Types.Maybe<Types.Scalars["ID"]>;
+  owner_id?: Types.Maybe<Types.Scalars["Int"]>;
 };
 
-export type GetListingsQuery = { __typename?: "Query" } & {
-  allListings: Types.Maybe<
-    { __typename?: "ListingConnection" } & {
-      listings: Types.Maybe<
-        Array<
-          Types.Maybe<
-            { __typename?: "Listing" } & Pick<Types.Listing, "id" | "title">
-          >
-        >
-      >;
-    }
+export type GetListingsQuery = { __typename?: "query_root" } & {
+  listings: Array<
+    { __typename?: "listings" } & Pick<Types.Listings, "id" | "title">
   >;
 };
 
 export const GetListingsDocument = gql`
-  query GetListings($owner_id: ID) {
-    allListings(owner_id: $owner_id) {
-      listings {
-        id
-        title
-      }
+  query GetListings($owner_id: Int) {
+    listings(where: { owner_id: { _eq: $owner_id } }) {
+      id
+      title
     }
   }
 `;

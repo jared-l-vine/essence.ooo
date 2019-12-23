@@ -1,15 +1,23 @@
 mutation CreateUser(
-  $id: String!
+  $id: Int!
   $username: String!
-  $discriminator: String!
+  $discriminator: Int!
   $avatar: String
 ) {
-  createUser(
-    id: $id
-    username: $username
-    discriminator: $discriminator
-    avatar: $avatar
+  insert_users(
+    objects: {
+      id: $id
+      username: $username
+      discriminator: $discriminator
+      avatar: $avatar
+    }
+    on_conflict: {
+      constraint: users_pkey
+      update_columns: [avatar, discriminator, username]
+    }
   ) {
-    id
+    returning {
+      id
+    }
   }
 }

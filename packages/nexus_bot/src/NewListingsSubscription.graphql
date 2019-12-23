@@ -1,17 +1,22 @@
-subscription NewListingsSubscription {
-  newListings {
-    id
-    title
+subscription NewListings {
+  listings {
+    created_at
     description
-    owner {
-      id
-      username
-      discriminator
-      avatar
-    }
     edition
+    id
+    last_posted
     medium
+    owner {
+      avatar
+      created_at
+      discriminator
+      id
+      updated_at
+      username
+    }
     players
     schedule
+    title
+    updated_at
   }
 }

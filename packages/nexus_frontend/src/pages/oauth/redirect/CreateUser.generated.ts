@@ -5,30 +5,42 @@ import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
 
 export type CreateUserMutationVariables = {
-  id: Types.Scalars["String"];
+  id: Types.Scalars["Int"];
   username: Types.Scalars["String"];
-  discriminator: Types.Scalars["String"];
+  discriminator: Types.Scalars["Int"];
   avatar?: Types.Maybe<Types.Scalars["String"]>;
 };
 
-export type CreateUserMutation = { __typename?: "Mutation" } & {
-  createUser: Types.Maybe<{ __typename?: "User" } & Pick<Types.User, "id">>;
+export type CreateUserMutation = { __typename?: "mutation_root" } & {
+  insert_users: Types.Maybe<
+    { __typename?: "users_mutation_response" } & {
+      returning: Array<{ __typename?: "users" } & Pick<Types.Users, "id">>;
+    }
+  >;
 };
 
 export const CreateUserDocument = gql`
   mutation CreateUser(
-    $id: String!
+    $id: Int!
     $username: String!
-    $discriminator: String!
+    $discriminator: Int!
     $avatar: String
   ) {
-    createUser(
-      id: $id
-      username: $username
-      discriminator: $discriminator
-      avatar: $avatar
+    insert_users(
+      objects: {
+        id: $id
+        username: $username
+        discriminator: $discriminator
+        avatar: $avatar
+      }
+      on_conflict: {
+        constraint: users_pkey
+        update_columns: [avatar, discriminator, username]
+      }
     ) {
-      id
+      returning {
+        id
+      }
     }
   }
 `;

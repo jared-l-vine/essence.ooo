@@ -7,28 +7,20 @@ import * as ApolloReactHooks from "@apollo/client";
 export type CreateListingMutationVariables = {
   title: Types.Scalars["String"];
   description?: Types.Maybe<Types.Scalars["String"]>;
-  owner_id: Types.Scalars["ID"];
+  owner_id: Types.Scalars["Int"];
+  edition?: Types.Maybe<Types.Scalars["String"]>;
+  medium?: Types.Maybe<Types.Scalars["String"]>;
+  players?: Types.Maybe<Types.Scalars["Int"]>;
+  schedule?: Types.Maybe<Types.Scalars["String"]>;
 };
 
-export type CreateListingMutation = { __typename?: "Mutation" } & {
-  createListing: Types.Maybe<
-    { __typename?: "Listing" } & Pick<
-      Types.Listing,
-      | "id"
-      | "title"
-      | "description"
-      | "created_at"
-      | "last_posted"
-      | "edition"
-      | "medium"
-      | "players"
-      | "schedule"
-    > & {
-        owner: { __typename?: "User" } & Pick<
-          Types.User,
-          "id" | "username" | "discriminator" | "avatar"
-        >;
-      }
+export type CreateListingMutation = { __typename?: "mutation_root" } & {
+  insert_listings: Types.Maybe<
+    { __typename?: "listings_mutation_response" } & {
+      returning: Array<
+        { __typename?: "listings" } & Pick<Types.Listings, "id">
+      >;
+    }
   >;
 };
 
@@ -36,28 +28,26 @@ export const CreateListingDocument = gql`
   mutation CreateListing(
     $title: String!
     $description: String
-    $owner_id: ID!
+    $owner_id: Int!
+    $edition: String
+    $medium: String
+    $players: Int
+    $schedule: String
   ) {
-    createListing(
-      title: $title
-      description: $description
-      owner_id: $owner_id
-    ) {
-      id
-      title
-      description
-      created_at
-      last_posted
-      owner {
-        id
-        username
-        discriminator
-        avatar
+    insert_listings(
+      objects: {
+        title: $title
+        description: $description
+        edition: $edition
+        medium: $medium
+        owner_id: $owner_id
+        players: $players
+        schedule: $schedule
       }
-      edition
-      medium
-      players
-      schedule
+    ) {
+      returning {
+        id
+      }
     }
   }
 `;
@@ -82,6 +72,10 @@ export type CreateListingMutationFn = ApolloReactCommon.MutationFunction<
  *      title: // value for 'title'
  *      description: // value for 'description'
  *      owner_id: // value for 'owner_id'
+ *      edition: // value for 'edition'
+ *      medium: // value for 'medium'
+ *      players: // value for 'players'
+ *      schedule: // value for 'schedule'
  *   },
  * });
  */

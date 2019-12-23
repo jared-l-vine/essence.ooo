@@ -1,24 +1,32 @@
 import * as Types from "../graphql/types.generated";
 
-export type NewListingsSubscriptionSubscriptionVariables = {};
+export type NewListingsSubscriptionVariables = {};
 
-export type NewListingsSubscriptionSubscription = {
-  __typename?: "Subscription";
-} & {
-  newListings: Types.Maybe<
-    { __typename?: "Listing" } & Pick<
-      Types.Listing,
-      | "id"
-      | "title"
+export type NewListingsSubscription = { __typename?: "subscription_root" } & {
+  listings: Array<
+    { __typename?: "listings" } & Pick<
+      Types.Listings,
+      | "created_at"
       | "description"
       | "edition"
+      | "id"
+      | "last_posted"
       | "medium"
       | "players"
       | "schedule"
+      | "title"
+      | "updated_at"
     > & {
-        owner: { __typename?: "User" } & Pick<
-          Types.User,
-          "id" | "username" | "discriminator" | "avatar"
+        owner: Types.Maybe<
+          { __typename?: "users" } & Pick<
+            Types.Users,
+            | "avatar"
+            | "created_at"
+            | "discriminator"
+            | "id"
+            | "updated_at"
+            | "username"
+          >
         >;
       }
   >;
@@ -26,22 +34,27 @@ export type NewListingsSubscriptionSubscription = {
 
 import gql from "graphql-tag";
 
-export const NewListingsSubscription = gql`
-  subscription NewListingsSubscription {
-    newListings {
-      id
-      title
+export const NewListings = gql`
+  subscription NewListings {
+    listings {
+      created_at
       description
-      owner {
-        id
-        username
-        discriminator
-        avatar
-      }
       edition
+      id
+      last_posted
       medium
+      owner {
+        avatar
+        created_at
+        discriminator
+        id
+        updated_at
+        username
+      }
       players
       schedule
+      title
+      updated_at
     }
   }
 `;

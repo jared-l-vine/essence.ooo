@@ -1,5 +1,8 @@
-query GetUser($id: String!) {
-  user(id: $id) {
+query GetUser($id: Int!) {
+  users_by_pk(id: $id) {
     id
+    avatar
+    discriminator
+    username
   }
 }

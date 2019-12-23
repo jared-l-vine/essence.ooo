@@ -1,8 +1,12 @@
+import nodeFetch from "node-fetch";
 import * as Discord from "discord.js";
 import * as Sentry from "@sentry/node";
 import * as Integrations from "@sentry/integrations";
 import { Listing } from "../graphql/types.generated";
 import Maybe from "graphql/tsutils/Maybe";
+
+const globalAny: any = global;
+globalAny.fetch = nodeFetch;
 
 Sentry.init({
   dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
@@ -18,33 +22,49 @@ const discordClient = new Discord.Client();
 
 discordClient.login(process.env.DISCORD_TOKEN);
 
-exports.handler = async (event: {
-  event: {
-    session_variables: {
-      ["x-hasura-role"]: string;
-      ["x-hasura-user-id"]: string;
-      ["x-hasura-discord-token"]: string;
-    };
-    data: {
-      old: Maybe<Listing>;
-      new: Listing;
+const sleep = async (timeout: number) =>
+  new Promise(res => setTimeout(res, timeout));
+
+export default async (event: {
+  body: {
+    event: {
+      session_variables: {
+        ["x-hasura-role"]: string;
+        ["x-hasura-user-id"]: string;
+        ["x-hasura-discord-token"]: string;
+      };
+      data: {
+        old: Maybe<Listing>;
+        new: Listing;
+      };
     };
   };
+  payload: typeof event.body.event;
 }) => {
+  console.log("starting");
+  console.log("=========");
+  console.log(event);
+  console.log("=========");
+  console.log(JSON.stringify(event));
+  console.log("=========");
   // get user details
   const user = await fetch("https://discordapp.com/api/v6/users/@me", {
     headers: {
-      authorization: event?.event.session_variables["x-hasura-discord-token"]
+      authorization: (event?.body || event?.payload).event.session_variables[
+        "x-hasura-discord-token"
+      ]
     }
   }).then(r => r.json());
 
   const {
     event: {
-      data: { new: listing }
+      data: { old, new: listing }
     }
-  } = event;
+  } = event?.body || event?.payload;
 
   console.log(user);
+
+  let finished = false;
 
   discordClient.on("ready", async () => {
     console.log(`Logged in as ${discordClient.user.tag}!`);
@@ -63,8 +83,8 @@ exports.handler = async (event: {
           title: `**${listing?.title}**`,
           // url: "https://discord.js.org",
           author: {
-            name: `@${listing?.owner?.username}#${listing?.owner?.discriminator}`,
-            icon_url: `https://cdn.discordapp.com/avatars/${listing?.owner?.id}/${listing?.owner?.avatar}.png?size=32`
+            name: `@${user?.username}#${user?.discriminator}`,
+            icon_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=32`
             // url: "https://discord.js.org"
           },
           description: listing?.description || undefined,
@@ -105,6 +125,14 @@ exports.handler = async (event: {
       // update listing
     } catch (ex) {
       console.error(ex);
+    } finally {
+      console.log("finished");
+      finished = true;
     }
   });
+
+  while (!finished) {
+    await sleep(100);
+  }
+  console.log("shutting down");
 };

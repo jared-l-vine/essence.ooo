@@ -7,16 +7,22 @@ const Field: FunctionComponent<{
   fieldType?: string;
   placeholder?: string | null;
   flexDirection?: CSSProperties["flexDirection"];
+  maxLength?: HTMLInputElement["maxLength"];
+  max?: HTMLInputElement["max"];
 }> = ({
   name,
   label = name,
   fieldType = "text",
   placeholder = label,
-  flexDirection = "column"
+  flexDirection = "column",
+  maxLength,
+  max
 }) => (
   <label style={{ display: "flex", flexDirection: flexDirection }}>
     <span>{label}</span>
     <FormikField
+      maxLength={maxLength}
+      max={max}
       type={fieldType}
       name={name}
       placeholder={placeholder}

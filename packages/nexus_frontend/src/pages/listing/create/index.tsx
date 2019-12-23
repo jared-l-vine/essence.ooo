@@ -79,11 +79,12 @@ const CreateListingPage: FunctionComponent = () => {
               }}
             >
               <fieldset disabled={!user || loading}>
-                <Field name="title" label="Game Name" />
+                <Field name="title" label="Game Name" maxLength={256} />
                 <Field
                   name="description"
                   label="Description"
                   fieldType="textarea"
+                  maxLength={2048}
                 />
                 <div
                   style={{
@@ -133,9 +134,10 @@ const CreateListingPage: FunctionComponent = () => {
                     fieldType="number"
                     flexDirection="row"
                     placeholder="0"
+                    max="100"
                   />
                 </div>
-                <Field name="schedule" label="Schedule" />
+                <Field name="schedule" label="Schedule" maxLength={1024} />
 
                 <button type="submit" disabled={!isValid}>
                   Create Listing

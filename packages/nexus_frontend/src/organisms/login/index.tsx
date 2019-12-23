@@ -21,7 +21,7 @@ const LoginOrganism: FunctionComponent = () => {
       }
     }
     cookieAuth();
-  }, [cookie]);
+  }, [cookie, setUser]);
   return (
     <div>
       <span>Login Status {user ? "Logged In" : "Logged Out"}</span>

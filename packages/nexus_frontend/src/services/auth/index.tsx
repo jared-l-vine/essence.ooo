@@ -4,8 +4,7 @@ import React, {
   useState,
   ContextType,
   useMemo,
-  useContext,
-  useEffect
+  useContext
 } from "react";
 import Cookies from "js-cookie";
 import { User } from "../../../graphql/types.generated";

@@ -1,6 +1,6 @@
-import React, { FunctionComponent, Fragment, useEffect } from "react";
+import React, { FunctionComponent, Fragment } from "react";
 import toNumber from "lodash/toNumber";
-import { Formik, Form, Field as FormikField } from "formik";
+import { Formik, Form } from "formik";
 import {
   useCreateListingMutation,
   CreateListingMutationVariables
@@ -57,11 +57,12 @@ const CreateListingPage: FunctionComponent = () => {
         }
         onSubmit={async (variables, formik) => {
           try {
-            const { data, errors } = await createListing({
+            const { errors } = await createListing({
               variables: { ...variables, owner_id: toNumber(user?.id) }
             });
             if (!errors) {
               formik.resetForm();
+              alert("Your game will be posted shortly");
             }
           } catch (ex) {
             console.error(ex);

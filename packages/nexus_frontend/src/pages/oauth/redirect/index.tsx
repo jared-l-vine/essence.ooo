@@ -28,7 +28,7 @@ const OauthRedirectPage: FunctionComponent = () => {
       }
     );
     return hashParams;
-  }, []);
+  }, [hash]);
   useEffect(() => {
     async function redirectAuth() {
       const user = await discordLookup(

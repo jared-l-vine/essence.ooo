@@ -10,13 +10,14 @@ import { Router, View } from "react-navi";
 import { mount, route } from "navi";
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
+import { setContext } from "apollo-link-context";
+import { User } from "../graphql/types.generated";
+import Cookies from "js-cookie";
 
-["REACT_APP_APPSYNC_GRAPHQL_ENDPOINT", "REACT_APP_APPSYNC_API_KEY"].forEach(
-  variableName => {
-    if (!process.env[variableName])
-      throw new Error(`Could not find environment variable '${variableName}`);
-  }
-);
+["REACT_APP_GRAPHQL_ENDPOINT"].forEach(variableName => {
+  if (!process.env[variableName])
+    throw new Error(`Could not find environment variable '${variableName}`);
+});
 
 Sentry.init({
   dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
@@ -34,14 +35,31 @@ Sentry.configureScope(function(scope) {
   scope.setTag("app", "web");
 });
 
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token:
+    | (User & { token_type: string; access_token: string })
+    | null = Cookies.getJSON("discord_token");
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      "X-Hasura-User-Id": token?.id,
+      "X-Hasura-Discord-Token": `${token?.token_type} ${token?.access_token}`
+    }
+  };
+});
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: process.env.REACT_APP_APPSYNC_GRAPHQL_ENDPOINT,
-    headers: {
-      "x-api-key": process.env.REACT_APP_APPSYNC_API_KEY
-    }
-  })
+  link: authLink.concat(
+    new HttpLink({
+      uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+      headers: {
+        "X-Hasura-Role": "anonymous"
+      }
+    }) as any
+  ) as any
 });
 
 const LazyOauthRedirectPage = lazy(() => import("./pages/oauth/redirect"));

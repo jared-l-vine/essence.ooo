@@ -34,6 +34,7 @@ export const AuthContextProvider: FunctionComponent = ({ children }) => {
     [cookie, user, setUser, setCookie]
   );
 
+  console.log(JSON.parse(cookie || ""));
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );

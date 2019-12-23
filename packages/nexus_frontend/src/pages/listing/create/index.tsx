@@ -1,10 +1,10 @@
 import React, { FunctionComponent, Fragment, useEffect } from "react";
-
+import toNumber from "lodash/toNumber";
 import { Formik, Form, Field as FormikField } from "formik";
 import {
   useCreateListingMutation,
   CreateListingMutationVariables
-} from "./createListing.generated";
+} from "./CreateListing.generated";
 import { useGetListingsLazyQuery } from "./GetListings.generated";
 import useAuthContext from "../../../services/auth";
 import LoginOrganism from "../../../organisms/login";
@@ -24,6 +24,8 @@ const CreateListingPage: FunctionComponent = () => {
       getListings({ variables: { owner_id: user.id } });
     }
   }, [user]);
+
+  console.log(user);
 
   return (
     <div
@@ -51,13 +53,13 @@ const CreateListingPage: FunctionComponent = () => {
             medium: "Online Voice",
             schedule: undefined,
             players: 5,
-            owner_id: user?.id
+            owner_id: toNumber(user?.id)
           } as CreateListingMutationVariables
         }
         onSubmit={async variables => {
           try {
             const { data, errors } = await createListing({
-              variables: { ...variables, owner_id: user?.id as string }
+              variables: { ...variables, owner_id: toNumber(user?.id) }
             });
             if (!errors) {
               console.log(data);
@@ -115,11 +117,11 @@ const CreateListingPage: FunctionComponent = () => {
           </Fragment>
         )}
       </Formik>
-      {(getListingsData?.allListings?.listings?.length ?? 0) > 0 && (
+      {(getListingsData?.listings?.length ?? 0) > 0 && (
         <Fragment>
           <h2>Your Listings</h2>
           <ul>
-            {getListingsData?.allListings?.listings!.map(l => (
+            {getListingsData?.listings!.map(l => (
               <li key={l?.id}>{l?.title}</li>
             ))}
           </ul>

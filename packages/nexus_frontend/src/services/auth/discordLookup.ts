@@ -11,6 +11,15 @@ export default async function discordLookup(
     headers: { authorization: `${token_type} ${access_token}` }
   })
     .then(r => r.json())
+    .then(user => {
+      const token = Cookies.getJSON("discord_token");
+      Cookies.set(
+        "discord_token",
+        { ...token, id: user.id },
+        { expires: new Date(token.expiry) }
+      );
+      return user;
+    })
     .catch(ex => {
       Cookies.remove("discord_token");
       console.error(ex);

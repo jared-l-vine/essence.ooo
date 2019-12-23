@@ -95,6 +95,11 @@ export default async (event: { body: string }) => {
           //   url: "https://i.imgur.com/wSTFkRM.png"
           // },
           fields: [
+            listing?.splat && {
+              name: "Splat",
+              value: listing.splat,
+              inline: true
+            },
             listing?.edition && {
               name: "Edition",
               value: listing.edition,

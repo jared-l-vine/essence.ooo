@@ -3,6 +3,7 @@ var path = require("path");
 module.exports = {
   mode: "development",
   target: "node",
+  devtool: false,
   // Specify the entry point for our app.
   entry: path.join(__dirname, "src/index.ts"),
   // Specify the output file containing our bundled code

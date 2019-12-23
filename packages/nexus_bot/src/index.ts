@@ -25,8 +25,20 @@ discordClient.login(process.env.DISCORD_TOKEN);
 const sleep = async (timeout: number) =>
   new Promise(res => setTimeout(res, timeout));
 
-export default async (event: {
-  body: {
+export default async (event: { body: string }) => {
+  console.log("starting");
+  console.log("=========");
+  console.log(event);
+  console.log("=========");
+
+  const body = JSON.parse(event.body);
+
+  const {
+    event: {
+      data: { old, new: listing },
+      session_variables
+    }
+  } = body as {
     event: {
       session_variables: {
         ["x-hasura-role"]: string;
@@ -39,28 +51,12 @@ export default async (event: {
       };
     };
   };
-  payload: typeof event.body.event;
-}) => {
-  console.log("starting");
-  console.log("=========");
-  console.log(event);
-  console.log("=========");
-  console.log(JSON.stringify(event));
-  console.log("=========");
   // get user details
   const user = await fetch("https://discordapp.com/api/v6/users/@me", {
     headers: {
-      authorization: (event?.body || event?.payload).event.session_variables[
-        "x-hasura-discord-token"
-      ]
+      authorization: body.event.session_variables["x-hasura-discord-token"]
     }
   }).then(r => r.json());
-
-  const {
-    event: {
-      data: { old, new: listing }
-    }
-  } = event?.body || event?.payload;
 
   console.log(user);
 

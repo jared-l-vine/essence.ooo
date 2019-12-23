@@ -50,8 +50,8 @@ const CreateListingPage: FunctionComponent = () => {
             splat: "Solars",
             edition: "Third",
             medium: "Online Voice",
-            schedule: undefined,
-            players: undefined,
+            schedule: "",
+            players: 5,
             owner_id: toNumber(user?.id)
           } as CreateListingMutationVariables
         }
@@ -69,7 +69,7 @@ const CreateListingPage: FunctionComponent = () => {
           }
         }}
       >
-        {({ isValid, setFieldValue, values }) => (
+        {({ isValid }) => (
           <Fragment>
             {error && <span>{error.message}</span>}
             <Form

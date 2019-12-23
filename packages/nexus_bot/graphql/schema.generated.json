@@ -486,6 +486,12 @@
             "deprecationReason": null
           },
           {
+            "name": "splat",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "title",
             "description": "column name",
             "isDeprecated": false,
@@ -608,6 +614,16 @@
           },
           {
             "name": "schedule",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "splat",
             "description": "",
             "type": {
               "kind": "ENUM",
@@ -1028,6 +1044,16 @@
             "defaultValue": null
           },
           {
+            "name": "splat",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "title",
             "description": "",
             "type": {
@@ -1140,6 +1166,16 @@
           },
           {
             "name": "schedule",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "splat",
             "description": "",
             "type": {
               "kind": "ENUM",
@@ -1596,6 +1632,16 @@
           },
           {
             "name": "schedule",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "splat",
             "description": "",
             "type": {
               "kind": "INPUT_OBJECT",
@@ -2454,6 +2500,18 @@
             "deprecationReason": null
           },
           {
+            "name": "splat",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "title",
             "description": "",
             "args": [],
@@ -3158,6 +3216,18 @@
             "deprecationReason": null
           },
           {
+            "name": "splat",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "title",
             "description": "",
             "args": [],
@@ -3290,6 +3360,18 @@
           },
           {
             "name": "schedule",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "splat",
             "description": "",
             "args": [],
             "type": {
@@ -4829,6 +4911,16 @@
             "defaultValue": null
           },
           {
+            "name": "splat",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "title",
             "description": "",
             "type": {
@@ -5149,6 +5241,12 @@
             "deprecationReason": null
           },
           {
+            "name": "splat",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "title",
             "description": "column name",
             "isDeprecated": false,
@@ -5413,6 +5511,16 @@
           },
           {
             "name": "schedule",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "splat",
             "description": "",
             "type": {
               "kind": "SCALAR",

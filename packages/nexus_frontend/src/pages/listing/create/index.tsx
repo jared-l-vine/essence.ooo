@@ -47,6 +47,7 @@ const CreateListingPage: FunctionComponent = () => {
           {
             title: "",
             description: "",
+            splat: "Solars",
             edition: "Third",
             medium: "Online Voice",
             schedule: undefined,
@@ -86,9 +87,19 @@ const CreateListingPage: FunctionComponent = () => {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between"
+                    justifyContent: "space-around"
                   }}
                 >
+                  <SelectField
+                    name="splat"
+                    label="Splat"
+                    options={[
+                      "Solars",
+                      "Dragon-Blooded",
+                      "Lunars",
+                      "Other"
+                    ].map(v => ({ label: v, value: v }))}
+                  />
                   <SelectField
                     name="edition"
                     label="Edition"
@@ -97,7 +108,13 @@ const CreateListingPage: FunctionComponent = () => {
                       value: v
                     }))}
                   />
-
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around"
+                  }}
+                >
                   <SelectField
                     name="medium"
                     label="Medium"

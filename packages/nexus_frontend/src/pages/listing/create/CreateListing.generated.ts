@@ -12,6 +12,7 @@ export type CreateListingMutationVariables = {
   medium?: Types.Maybe<Types.Scalars["String"]>;
   players?: Types.Maybe<Types.Scalars["Int"]>;
   schedule?: Types.Maybe<Types.Scalars["String"]>;
+  splat?: Types.Maybe<Types.Scalars["String"]>;
 };
 
 export type CreateListingMutation = { __typename?: "mutation_root" } & {
@@ -31,6 +32,7 @@ export const CreateListingDocument = gql`
     $medium: String
     $players: Int
     $schedule: String
+    $splat: String
   ) {
     insert_listing(
       objects: {
@@ -41,6 +43,7 @@ export const CreateListingDocument = gql`
         owner_id: $owner_id
         players: $players
         schedule: $schedule
+        splat: $splat
       }
     ) {
       returning {
@@ -74,6 +77,7 @@ export type CreateListingMutationFn = ApolloReactCommon.MutationFunction<
  *      medium: // value for 'medium'
  *      players: // value for 'players'
  *      schedule: // value for 'schedule'
+ *      splat: // value for 'splat'
  *   },
  * });
  */

@@ -59,6 +59,7 @@ export type Listing = {
   owner_id: Scalars["bigint"];
   players?: Maybe<Scalars["Int"]>;
   schedule?: Maybe<Scalars["String"]>;
+  splat?: Maybe<Scalars["String"]>;
   title: Scalars["String"];
   updated_at: Scalars["timestamptz"];
 };
@@ -143,6 +144,7 @@ export type Listing_Bool_Exp = {
   owner_id?: Maybe<Bigint_Comparison_Exp>;
   players?: Maybe<Int_Comparison_Exp>;
   schedule?: Maybe<String_Comparison_Exp>;
+  splat?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
@@ -172,6 +174,7 @@ export type Listing_Insert_Input = {
   owner_id?: Maybe<Scalars["bigint"]>;
   players?: Maybe<Scalars["Int"]>;
   schedule?: Maybe<Scalars["String"]>;
+  splat?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
   updated_at?: Maybe<Scalars["timestamptz"]>;
 };
@@ -188,6 +191,7 @@ export type Listing_Max_Fields = {
   owner_id?: Maybe<Scalars["bigint"]>;
   players?: Maybe<Scalars["Int"]>;
   schedule?: Maybe<Scalars["String"]>;
+  splat?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
   updated_at?: Maybe<Scalars["timestamptz"]>;
 };
@@ -203,6 +207,7 @@ export type Listing_Max_Order_By = {
   owner_id?: Maybe<Order_By>;
   players?: Maybe<Order_By>;
   schedule?: Maybe<Order_By>;
+  splat?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -219,6 +224,7 @@ export type Listing_Min_Fields = {
   owner_id?: Maybe<Scalars["bigint"]>;
   players?: Maybe<Scalars["Int"]>;
   schedule?: Maybe<Scalars["String"]>;
+  splat?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
   updated_at?: Maybe<Scalars["timestamptz"]>;
 };
@@ -234,6 +240,7 @@ export type Listing_Min_Order_By = {
   owner_id?: Maybe<Order_By>;
   players?: Maybe<Order_By>;
   schedule?: Maybe<Order_By>;
+  splat?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -272,6 +279,7 @@ export type Listing_Order_By = {
   owner_id?: Maybe<Order_By>;
   players?: Maybe<Order_By>;
   schedule?: Maybe<Order_By>;
+  splat?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -297,6 +305,8 @@ export enum Listing_Select_Column {
   /** column name */
   Schedule = "schedule",
   /** column name */
+  Splat = "splat",
+  /** column name */
   Title = "title",
   /** column name */
   UpdatedAt = "updated_at"
@@ -313,6 +323,7 @@ export type Listing_Set_Input = {
   owner_id?: Maybe<Scalars["bigint"]>;
   players?: Maybe<Scalars["Int"]>;
   schedule?: Maybe<Scalars["String"]>;
+  splat?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
   updated_at?: Maybe<Scalars["timestamptz"]>;
 };
@@ -397,6 +408,8 @@ export enum Listing_Update_Column {
   Players = "players",
   /** column name */
   Schedule = "schedule",
+  /** column name */
+  Splat = "splat",
   /** column name */
   Title = "title",
   /** column name */
@@ -1324,6 +1337,7 @@ export type ListingResolvers<
   owner_id?: Resolver<ResolversTypes["bigint"], ParentType, ContextType>;
   players?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   schedule?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  splat?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   updated_at?: Resolver<ResolversTypes["timestamptz"], ParentType, ContextType>;
 };
@@ -1436,6 +1450,7 @@ export type Listing_Max_FieldsResolvers<
   owner_id?: Resolver<Maybe<ResolversTypes["bigint"]>, ParentType, ContextType>;
   players?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   schedule?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  splat?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   updated_at?: Resolver<
     Maybe<ResolversTypes["timestamptz"]>,
@@ -1469,6 +1484,7 @@ export type Listing_Min_FieldsResolvers<
   owner_id?: Resolver<Maybe<ResolversTypes["bigint"]>, ParentType, ContextType>;
   players?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   schedule?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  splat?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   updated_at?: Resolver<
     Maybe<ResolversTypes["timestamptz"]>,

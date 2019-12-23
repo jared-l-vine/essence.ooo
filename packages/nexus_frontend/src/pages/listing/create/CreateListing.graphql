@@ -6,6 +6,7 @@ mutation CreateListing(
   $medium: String
   $players: Int
   $schedule: String
+  $splat: String
 ) {
   insert_listing(
     objects: {
@@ -16,6 +17,7 @@ mutation CreateListing(
       owner_id: $owner_id
       players: $players
       schedule: $schedule
+      splat: $splat
     }
   ) {
     returning {

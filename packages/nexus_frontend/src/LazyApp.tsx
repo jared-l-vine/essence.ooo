@@ -14,11 +14,6 @@ import { setContext } from "apollo-link-context";
 import { User } from "../graphql/types.generated";
 import Cookies from "js-cookie";
 
-["REACT_APP_GRAPHQL_ENDPOINT"].forEach(variableName => {
-  if (!process.env[variableName])
-    throw new Error(`Could not find environment variable '${variableName}`);
-});
-
 Sentry.init({
   dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
   release: process.env.AWS_COMMIT_ID,

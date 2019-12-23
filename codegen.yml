@@ -45,23 +45,23 @@ generates:
   packages/nexus_bot/graphql/schema.generated.json:
     plugins:
       - "introspection"
-  packages/nexus_bot:
-    documents: "packages/nexus_bot/**/*.graphql"
-    preset: near-operation-file
-    presetConfig:
-      extension: .generated.ts
-      baseTypesPath: /graphql/types.generated.d
-    plugins:
-      - "typescript-operations"
-      - "typescript-document-nodes"
-  packages/nexus_bot/:
-    documents: "packages/nexus_bot/**/*.graphql"
-    preset: near-operation-file
-    presetConfig:
-      extension: .generated.d.ts
-      baseTypesPath: /graphql/types.generated.d
-    plugins:
-      - "typescript-graphql-files-modules"
+  # packages/nexus_bot:
+  #   documents: "packages/nexus_bot/**/*.graphql"
+  #   preset: near-operation-file
+  #   presetConfig:
+  #     extension: .generated.ts
+  #     baseTypesPath: /graphql/types.generated.d
+  #   plugins:
+  #     - "typescript-operations"
+  #     - "typescript-document-nodes"
+  # packages/nexus_bot/:
+  #   documents: "packages/nexus_bot/**/*.graphql"
+  #   preset: near-operation-file
+  #   presetConfig:
+  #     extension: .generated.d.ts
+  #     baseTypesPath: /graphql/types.generated.d
+  #   plugins:
+  #     - "typescript-graphql-files-modules"
 hooks:
   afterAllFileWrite:
     # - eslint --fix

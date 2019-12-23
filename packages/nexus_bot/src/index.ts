@@ -136,4 +136,7 @@ export default async (event: { body: string }) => {
     await sleep(250);
   }
   console.info("shutting down");
+  return {
+    status: 200
+  };
 };

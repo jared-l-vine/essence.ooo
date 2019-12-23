@@ -1,13 +1,13 @@
 mutation CreateListing(
   $title: String!
   $description: String
-  $owner_id: Int!
+  $owner_id: bigint!
   $edition: String
   $medium: String
   $players: Int
   $schedule: String
 ) {
-  insert_listings(
+  insert_listing(
     objects: {
       title: $title
       description: $description

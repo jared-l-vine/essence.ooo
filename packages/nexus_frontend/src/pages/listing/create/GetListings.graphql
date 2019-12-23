@@ -1,5 +1,5 @@
-query GetListings($owner_id: Int) {
-  listings(where: {owner_id: {_eq: $owner_id}}) {
+query GetListings($owner_id: bigint) {
+  listings: listing(where: { owner_id: { _eq: $owner_id } }) {
     id
     title
   }

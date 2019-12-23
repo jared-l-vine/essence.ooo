@@ -5,21 +5,21 @@ import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
 
 export type GetUserQueryVariables = {
-  id: Types.Scalars["Int"];
+  id: Types.Scalars["bigint"];
 };
 
 export type GetUserQuery = { __typename?: "query_root" } & {
-  users_by_pk: Types.Maybe<
-    { __typename?: "users" } & Pick<
-      Types.Users,
+  user_by_pk: Types.Maybe<
+    { __typename?: "user" } & Pick<
+      Types.User,
       "id" | "avatar" | "discriminator" | "username"
     >
   >;
 };
 
 export const GetUserDocument = gql`
-  query GetUser($id: Int!) {
-    users_by_pk(id: $id) {
+  query GetUser($id: bigint!) {
+    user_by_pk(id: $id) {
       id
       avatar
       discriminator

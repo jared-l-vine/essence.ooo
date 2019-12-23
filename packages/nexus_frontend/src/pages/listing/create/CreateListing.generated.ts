@@ -7,7 +7,7 @@ import * as ApolloReactHooks from "@apollo/client";
 export type CreateListingMutationVariables = {
   title: Types.Scalars["String"];
   description?: Types.Maybe<Types.Scalars["String"]>;
-  owner_id: Types.Scalars["Int"];
+  owner_id: Types.Scalars["bigint"];
   edition?: Types.Maybe<Types.Scalars["String"]>;
   medium?: Types.Maybe<Types.Scalars["String"]>;
   players?: Types.Maybe<Types.Scalars["Int"]>;
@@ -15,11 +15,9 @@ export type CreateListingMutationVariables = {
 };
 
 export type CreateListingMutation = { __typename?: "mutation_root" } & {
-  insert_listings: Types.Maybe<
-    { __typename?: "listings_mutation_response" } & {
-      returning: Array<
-        { __typename?: "listings" } & Pick<Types.Listings, "id">
-      >;
+  insert_listing: Types.Maybe<
+    { __typename?: "listing_mutation_response" } & {
+      returning: Array<{ __typename?: "listing" } & Pick<Types.Listing, "id">>;
     }
   >;
 };
@@ -28,13 +26,13 @@ export const CreateListingDocument = gql`
   mutation CreateListing(
     $title: String!
     $description: String
-    $owner_id: Int!
+    $owner_id: bigint!
     $edition: String
     $medium: String
     $players: Int
     $schedule: String
   ) {
-    insert_listings(
+    insert_listing(
       objects: {
         title: $title
         description: $description

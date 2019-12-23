@@ -5,28 +5,28 @@ import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
 
 export type CreateUserMutationVariables = {
-  id: Types.Scalars["Int"];
+  id: Types.Scalars["bigint"];
   username: Types.Scalars["String"];
   discriminator: Types.Scalars["Int"];
   avatar?: Types.Maybe<Types.Scalars["String"]>;
 };
 
 export type CreateUserMutation = { __typename?: "mutation_root" } & {
-  insert_users: Types.Maybe<
-    { __typename?: "users_mutation_response" } & {
-      returning: Array<{ __typename?: "users" } & Pick<Types.Users, "id">>;
+  insert_user: Types.Maybe<
+    { __typename?: "user_mutation_response" } & {
+      returning: Array<{ __typename?: "user" } & Pick<Types.User, "id">>;
     }
   >;
 };
 
 export const CreateUserDocument = gql`
   mutation CreateUser(
-    $id: Int!
+    $id: bigint!
     $username: String!
     $discriminator: Int!
     $avatar: String
   ) {
-    insert_users(
+    insert_user(
       objects: {
         id: $id
         username: $username
@@ -34,7 +34,7 @@ export const CreateUserDocument = gql`
         avatar: $avatar
       }
       on_conflict: {
-        constraint: users_pkey
+        constraint: user_pkey
         update_columns: [avatar, discriminator, username]
       }
     ) {

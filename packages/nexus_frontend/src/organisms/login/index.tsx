@@ -29,9 +29,11 @@ const LoginOrganism: FunctionComponent = () => {
         <a
           href={`https://discordapp.com/api/oauth2/authorize?redirect_uri=${
             window.location.origin
-          }/oauth/redirect&response_type=token&client_id=656006759533641739&scope=identify%20guilds%20guilds.join&state=${btoa(
-            JSON.stringify(url)
-          )}`}
+          }/oauth/redirect&response_type=token&client_id=656006759533641739&scope=${[
+            "identify"
+            // "guilds",
+            // "guilds.join"
+          ].join("%20")}&state=${btoa(JSON.stringify(url))}`}
         >
           Log In
         </a>

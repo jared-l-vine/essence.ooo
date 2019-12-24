@@ -1,5 +1,4 @@
 import nodeFetch from "node-fetch";
-import * as Discord from "discord.js";
 import * as Sentry from "@sentry/node";
 import * as Integrations from "@sentry/integrations";
 import { Listing } from "../graphql/types.generated";
@@ -18,22 +17,8 @@ Sentry.init({
   ]
 });
 
-const discordClient = new Discord.Client();
-
-discordClient.login(process.env.DISCORD_TOKEN);
-
-discordClient.on("error", error => {
-  console.error("Discord Error");
-  console.error(error.name);
-  console.error(error.message);
-  console.error(error);
-});
-
-const sleep = async (timeout: number) =>
-  new Promise(res => setTimeout(res, timeout));
-
 export default async (event: { body: string }) => {
-  console.info("starting latest");
+  console.info("starting");
 
   const body = JSON.parse(event.body);
   console.log(event);
@@ -65,110 +50,85 @@ export default async (event: { body: string }) => {
 
   console.log(user);
 
-  let finished = false;
-  let message: Discord.Message | Discord.Message[];
+  try {
+    // post
+    console.log("posting message");
 
-  discordClient.on("ready", async () => {
-    console.log(`Logged in as ${discordClient.user.tag}!`);
-
-    const findAGameChannel = discordClient.channels.find(
-      (_v, key) => key === (process.env.CHANNEL_ID || "656727606875389974")
-    ) as Discord.TextChannel;
-
-    console.log(`found channel '${findAGameChannel.name}'`);
-
-    try {
-      // post
-      console.log("posting message");
-      message = await findAGameChannel.send({
-        embed: {
-          color: 0xffff00,
-          title: `**${listing?.title}**`,
-          // url: "https://discord.js.org",
-          author: {
-            name: `@${user?.username}#${user?.discriminator}`,
-            icon_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=32`
-            // url: "https://discord.js.org"
-          },
-          description: listing?.description || undefined,
-          // thumbnail: {
-          //   url: "https://i.imgur.com/wSTFkRM.png"
-          // },
-          fields: [
-            listing?.splat && {
-              name: "Splat",
-              value: listing.splat,
-              inline: true
-            },
-            listing?.edition && {
-              name: "Edition",
-              value: listing.edition,
-              inline: true
-            },
-            listing?.medium && {
-              name: "Medium",
-              value: listing.medium,
-              inline: true
-            },
-            listing?.players && {
-              name: "Players",
-              value: listing.players,
-              inline: true
-            },
-            listing?.schedule && {
-              name: "Schedule",
-              value: listing.schedule
+    const response = await fetch(
+      "https://discordapp.com/api/webhooks/658822752312229928/H-MYX4FfZCF2GEo1If4czWOpU8R9wYac9neWj9cZo6nPtwXyqh7jDP7iywrezVcgUeK6?wait=true",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: "",
+          // username: user.username,
+          // avatar_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=128`,
+          embeds: [
+            {
+              color: 0xffff00,
+              title: `**${listing?.title}**`,
+              // url: "https://discord.js.org",
+              // author: {
+              //   name: `@${user?.username}#${user?.discriminator}`,
+              //   icon_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=32`
+              //   // url: "https://discord.js.org"
+              // },
+              description: listing?.description || undefined,
+              // thumbnail: {
+              //   url: "https://i.imgur.com/wSTFkRM.png"
+              // },
+              fields: [
+                { name: "Storyteller", value: `<@${user.id}>` },
+                listing?.splat && {
+                  name: "Splat",
+                  value: listing.splat,
+                  inline: true
+                },
+                listing?.edition && {
+                  name: "Edition",
+                  value: listing.edition,
+                  inline: true
+                },
+                listing?.medium && {
+                  name: "Medium",
+                  value: listing.medium,
+                  inline: true
+                },
+                listing?.players && {
+                  name: "Players",
+                  value: listing.players,
+                  inline: true
+                },
+                listing?.schedule && {
+                  name: "Schedule",
+                  value: listing.schedule
+                }
+              ].filter(Boolean),
+              // image: {
+              //   url: "https://i.imgur.com/wSTFkRM.png"
+              // },
+              timestamp: new Date(),
+              footer: {
+                text: "ne❌us"
+                // icon_url: "https://i.imgur.com/wSTFkRM.png"
+              }
             }
-          ].filter(Boolean),
-          // image: {
-          //   url: "https://i.imgur.com/wSTFkRM.png"
-          // },
-          timestamp: new Date(),
-          footer: {
-            text: "ne❌us"
-            // icon_url: "https://i.imgur.com/wSTFkRM.png"
-          }
-        }
-      });
-      if ((message as Discord.Message[]).length) {
-        console.log((message as Discord.Message[]).map(m => m.id));
-      } else {
-        console.log((message as Discord.Message).id);
+          ]
+        })
       }
-      // update listing
-    } catch (ex) {
-      console.error(ex);
-    } finally {
-      console.info("finished");
-      finished = true;
-    }
-  });
-
-  while (!finished) {
-    console.info(
-      "sleep",
-      discordClient.status,
-      discordClient.readyAt,
-      discordClient.pings
     );
-    if (discordClient.status === 5) {
-      console.warn("disconnected");
-      break;
-    }
-    await sleep(250);
-  }
-  console.info("shutting down");
-  await discordClient.destroy();
-  console.info("destroyed discord connection");
-
-  if (
-    // @ts-ignore
-    message
-  ) {
+    console.log("Done Posting");
+    const body = await response.json();
+    console.log(response);
+    console.log(body);
     return {
-      statusCode: "200"
+      statusCode: response.status
     };
-  } else {
+  } catch (ex) {
+    console.error(ex);
     return {
       statusCode: "500"
     };

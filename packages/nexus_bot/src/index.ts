@@ -64,7 +64,7 @@ export default async (event: { body: string }) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          content: `Hey <@&${lfgRoleId}>! <@${user.id}> is hosting a game.` },
+          content: `Hey <@&${lfgRoleId}>! <@${user.id}> is hosting a game.`,
           // username: user.username,
           // avatar_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=128`,
           embeds: [

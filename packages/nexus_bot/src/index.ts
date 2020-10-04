@@ -7,6 +7,8 @@ import Maybe from "graphql/tsutils/Maybe";
 const globalAny: any = global;
 globalAny.fetch = nodeFetch;
 
+const lfgRoleId = "219509431967154176";
+
 Sentry.init({
   dsn: "https://9656fc1c24a84d66a89f079981d684b7@sentry.io/1860567",
   environment: process.env.NODE_ENV,
@@ -53,7 +55,6 @@ export default async (event: { body: string }) => {
   try {
     // post
     console.log("posting message");
-
     const response = await fetch(
       "https://discordapp.com/api/webhooks/658822752312229928/H-MYX4FfZCF2GEo1If4czWOpU8R9wYac9neWj9cZo6nPtwXyqh7jDP7iywrezVcgUeK6?wait=true",
       {
@@ -63,7 +64,7 @@ export default async (event: { body: string }) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          content: "",
+          content: `Hey <@&${lfgRoleId}>! <@${user.id}> is hosting a game.`,
           // username: user.username,
           // avatar_url: `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png?size=128`,
           embeds: [
@@ -81,7 +82,7 @@ export default async (event: { body: string }) => {
               //   url: "https://i.imgur.com/wSTFkRM.png"
               // },
               fields: [
-                { name: "Storyteller", value: `<@${user.id}>` },
+                // { name: "Storyteller", value: `<@${user.id}>` },
                 listing?.splat && {
                   name: "Splat",
                   value: listing.splat,

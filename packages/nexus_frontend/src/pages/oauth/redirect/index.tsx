@@ -1,7 +1,5 @@
 import { FunctionComponent, useEffect, useMemo } from "react";
 import useAuthContext from "../../../services/auth";
-import { useCreateUserMutation } from "./CreateUser.generated";
-import { useApolloClient } from "@apollo/client";
 import { useCurrentRoute, useNavigation } from "react-navi";
 import getHashParams from "../../../util/getHashParams";
 import Cookies from "js-cookie";
@@ -11,12 +9,10 @@ import pick from "lodash/pick";
 
 const OauthRedirectPage: FunctionComponent = () => {
   const {
-    url: { hash }
+    url: { hash },
   } = useCurrentRoute();
   const navigation = useNavigation();
   const { setUser } = useAuthContext();
-  const apolloClient = useApolloClient();
-  const [createUser] = useCreateUserMutation();
   const hashParams = useMemo(() => {
     const hashParams = getHashParams(hash);
     const expiry = addSeconds(new Date(), Number(hashParams.expires_in));
@@ -24,7 +20,7 @@ const OauthRedirectPage: FunctionComponent = () => {
       "discord_token",
       { ...hashParams, expiry },
       {
-        expires: expiry
+        expires: expiry,
       }
     );
     return hashParams;
@@ -37,18 +33,11 @@ const OauthRedirectPage: FunctionComponent = () => {
       );
       if (user) {
         try {
-          const { errors } = await createUser({
-            variables: pick(user, ["id", "username", "discriminator", "avatar"])
-          });
-          if (errors) {
-            throw errors;
-          } else {
-            setUser(user);
-            navigation.navigate(
-              hashParams.state ? JSON.parse(atob(hashParams.state)) : "/"
-            );
-            return true;
-          }
+          setUser(user);
+          navigation.navigate(
+            hashParams.state ? JSON.parse(atob(hashParams.state)) : "/"
+          );
+          return true;
         } catch (ex) {
           console.error(ex);
         }
@@ -58,7 +47,7 @@ const OauthRedirectPage: FunctionComponent = () => {
       return false;
     }
     redirectAuth();
-  }, [apolloClient, createUser, hashParams, navigation, setUser]);
+  }, [hashParams, navigation, setUser]);
 
   return null;
 };

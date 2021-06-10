@@ -1,8 +1,0 @@
-query GetUser($id: bigint!) {
-  user_by_pk(id: $id) {
-    id
-    avatar
-    discriminator
-    username
-  }
-}

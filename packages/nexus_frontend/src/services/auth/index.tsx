@@ -4,10 +4,10 @@ import React, {
   useState,
   ContextType,
   useMemo,
-  useContext
+  useContext,
 } from "react";
 import Cookies from "js-cookie";
-import { User } from "../../../graphql/types.generated";
+import { User } from "../../types/User";
 
 export const AuthContext = createContext<{
   user: User | null;
@@ -20,7 +20,7 @@ export const AuthContext = createContext<{
     console.error("AuthContext setUser hasn't been initialized yet"),
   cookie: null,
   setCookie: () =>
-    console.error("AuthContext setCookie hasn't been initialized yet")
+    console.error("AuthContext setCookie hasn't been initialized yet"),
 });
 
 export const AuthContextProvider: FunctionComponent = ({ children }) => {

@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 // import * as serviceWorker from "./serviceWorker";
 
-["REACT_APP_GRAPHQL_ENDPOINT"].forEach(variableName => {
+["REACT_APP_API_GATEWAY"].forEach(variableName => {
   if (!process.env[variableName])
     throw new Error(`Could not find environment variable '${variableName}`);
 });

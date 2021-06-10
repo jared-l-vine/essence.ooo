@@ -1,29 +1,15 @@
 import React, { FunctionComponent, Fragment } from "react";
 import toNumber from "lodash/toNumber";
 import { Formik, Form } from "formik";
-import {
-  useCreateListingMutation,
-  CreateListingMutationVariables
-} from "./CreateListing.generated";
-// import { useGetListingsLazyQuery } from "./GetListings.generated";
 import useAuthContext from "../../../services/auth";
 import LoginOrganism from "../../../organisms/login";
 import Field from "../../../molecules/Field";
 import SelectField from "../../../molecules/Field/Select";
+import createListing from "./createListing";
+import Cookies from "js-cookie";
 
 const CreateListingPage: FunctionComponent = () => {
   const { user } = useAuthContext();
-  // const [
-  //   getListings,
-  //   { data: getListingsData, error: getListingsError }
-  // ] = useGetListingsLazyQuery();
-  const [createListing, { loading, error }] = useCreateListingMutation();
-
-  // useEffect(() => {
-  //   if (user) {
-  //     getListings({ variables: { owner_id: user.id } });
-  //   }
-  // }, [user]);
 
   return (
     <div
@@ -36,29 +22,28 @@ const CreateListingPage: FunctionComponent = () => {
         boxSizing: "border-box",
         margin: "0 auto",
         borderLeft: "2px solid #fbfaf4",
-        borderRight: "2px solid #fbfaf4"
+        borderRight: "2px solid #fbfaf4",
       }}
     >
       <LoginOrganism />
 
       <h2>Create New Listing</h2>
       <Formik
-        initialValues={
-          {
-            title: "",
-            description: "",
-            splat: "Solars",
-            edition: "Third",
-            medium: "Online Voice",
-            schedule: "",
-            players: 5,
-            owner_id: toNumber(user?.id)
-          } as CreateListingMutationVariables
-        }
+        initialValues={{
+          title: "",
+          description: "",
+          splat: "Solars",
+          edition: "Third",
+          medium: "Online Voice",
+          schedule: "",
+          players: 5,
+          owner_id: toNumber(user?.id),
+        }}
         onSubmit={async (variables, formik) => {
           try {
             const { errors } = await createListing({
-              variables: { ...variables, owner_id: toNumber(user?.id) }
+              discordToken: Cookies.getJSON("discord_token"),
+              listing: variables,
             });
             if (!errors) {
               formik.resetForm();
@@ -71,14 +56,19 @@ const CreateListingPage: FunctionComponent = () => {
       >
         {({ isValid }) => (
           <Fragment>
-            {error && <span>{error.message}</span>}
+            {/* {error && <span>{error.message}</span>} */}
             <Form
               style={{
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
               }}
             >
-              <fieldset disabled={!user || loading}>
+              <fieldset
+                disabled={
+                  !user
+                  // || loading
+                }
+              >
                 <Field name="title" label="Game Name" maxLength={256} />
                 <Field
                   name="description"
@@ -89,7 +79,7 @@ const CreateListingPage: FunctionComponent = () => {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-around"
+                    justifyContent: "space-around",
                   }}
                 >
                   <SelectField
@@ -99,31 +89,31 @@ const CreateListingPage: FunctionComponent = () => {
                       "Solars",
                       "Dragon-Blooded",
                       "Lunars",
-                      "Other"
-                    ].map(v => ({ label: v, value: v }))}
+                      "Other",
+                    ].map((v) => ({ label: v, value: v }))}
                   />
                   <SelectField
                     name="edition"
                     label="Edition"
-                    options={["First", "Second", "Third"].map(v => ({
+                    options={["First", "Second", "Third"].map((v) => ({
                       label: v,
-                      value: v
+                      value: v,
                     }))}
                   />
                 </div>
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-around"
+                    justifyContent: "space-around",
                   }}
                 >
                   <SelectField
                     name="medium"
                     label="Medium"
                     options={["Online Voice", "Online Text", "In Person"].map(
-                      v => ({
+                      (v) => ({
                         label: v,
-                        value: v
+                        value: v,
                       })
                     )}
                   />

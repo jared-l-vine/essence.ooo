@@ -1,5 +1,5 @@
+import { User } from "../../types/User";
 import Cookies from "js-cookie";
-import { User } from "../../../graphql/types.generated";
 
 export default async function discordLookup(
   token_type: string,
@@ -7,11 +7,11 @@ export default async function discordLookup(
 ): Promise<User | null> {
   if (!token_type || !access_token) throw new Error("Invalid OAuth Redirect");
 
-  const user: User = await fetch("https://discordapp.com/api/v6/users/@me", {
-    headers: { authorization: `${token_type} ${access_token}` }
+  const user = await fetch("https://discordapp.com/api/v6/users/@me", {
+    headers: { authorization: `${token_type} ${access_token}` },
   })
-    .then(r => r.json())
-    .then(user => {
+    .then((r) => r.json())
+    .then((user) => {
       const token = Cookies.getJSON("discord_token");
       Cookies.set(
         "discord_token",
@@ -20,7 +20,7 @@ export default async function discordLookup(
       );
       return user;
     })
-    .catch(ex => {
+    .catch((ex) => {
       Cookies.remove("discord_token");
       console.error(ex);
       return ex;

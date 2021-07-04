@@ -26,7 +26,15 @@ export default async (event: { body: string }) => {
   console.log(event);
   console.log(body);
   const { discordToken, listing } = body as {
-    discordToken: string;
+    discordToken: {
+      token_type: string;
+      access_token: string;
+      expires_in: string;
+      scope: string;
+      state: string;
+      expiry: string;
+      id: string;
+    };
     listing: Record<
       | "splat"
       | "description"
@@ -41,7 +49,7 @@ export default async (event: { body: string }) => {
   // get user details
   const user = await fetch("https://discordapp.com/api/v6/users/@me", {
     headers: {
-      authorization: discordToken,
+      authorization: `${discordToken.token_type} ${discordToken.access_token}`,
     },
   }).then((r) => r.json());
 

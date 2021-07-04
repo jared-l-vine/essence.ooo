@@ -95,10 +95,12 @@ const CreateListingPage: FunctionComponent = () => {
                   <SelectField
                     name="edition"
                     label="Edition"
-                    options={["First", "Second", "Third"].map((v) => ({
-                      label: v,
-                      value: v,
-                    }))}
+                    options={["Third", "Essence", "First", "Second"].map(
+                      (v) => ({
+                        label: v,
+                        value: v,
+                      })
+                    )}
                   />
                 </div>
                 <div
